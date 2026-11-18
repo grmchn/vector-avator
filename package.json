@@ -1,0 +1,25 @@
+{
+  "name": "vector-avator",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A 2D vector avatar made from one character illustration, moved by a 3D skeleton",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5280",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --port 5281",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "polygon-clipping": "^0.15.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "playwright": "^1.65.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

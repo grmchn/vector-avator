@@ -1,0 +1,5 @@
+.file-row { display: flex; flex-direction: column; gap: 6px; }
+.file-row input[type="file"] { font-size: 13px; }
+.file-row .caption { margin: 0; }
+details.more { margin-bottom: 18px; }
+details.more > summary { cursor: pointer; font-weight: 700; padding: 12px 0; }

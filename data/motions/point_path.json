@@ -1,0 +1,17 @@
+{
+  "name": "point_path", "label": "9. 指差しの順路（左→足の間→カメラ→真上）", "duration": 8.0, "loop": true,
+  "keys": [
+    {"t": 0, "bones": {"leftUpperArm": [0, 0, -70], "leftLowerArm": [0, 0, -5], "rightUpperArm": [0, 0, 70], "rightLowerArm": [0, 0, 5], "rightHand": [0, 0, 0], "chest": [0, 0, 0], "head": [0, 0, 0]}, "hands": {"L": "open", "R": "open"}, "face": {"yaw": 0, "pitch": 0, "gazeX": 0, "gazeY": 0, "expression": "neutral"}},
+    {"t": 0.3, "hands": {"R": "point"}},
+    {"t": 0.8, "bones": {"rightUpperArm": [0, 0, 4], "rightLowerArm": [0, 0, 0], "chest": [0, -8, 0]}, "face": {"yaw": -22, "gazeX": -10, "expression": "smile"}},
+    {"t": 1.8, "bones": {"rightUpperArm": [0, 0, 2], "rightLowerArm": [0, 0, 0], "chest": [0, -8, 0]}, "face": {"yaw": -22, "gazeX": -10}},
+    {"t": 2.7, "bones": {"rightUpperArm": [0, 150, 62], "rightLowerArm": [0, 0, 0], "chest": [6, 0, 0], "head": [10, 0, 0]}, "face": {"yaw": 0, "pitch": -12, "gazeX": 0, "gazeY": -12, "expression": "neutral"}},
+    {"t": 3.6, "bones": {"rightUpperArm": [0, 148, 60], "rightLowerArm": [0, 0, 0], "chest": [6, 0, 0], "head": [10, 0, 0]}, "face": {"pitch": -12, "gazeY": -12}},
+    {"t": 4.5, "bones": {"rightUpperArm": [0, 88, 8], "rightLowerArm": [0, 0, 0], "chest": [0, 0, 0], "head": [0, 0, 0]}, "face": {"yaw": 0, "pitch": 0, "gazeY": 0, "expression": "smile"}},
+    {"t": 5.4, "bones": {"rightUpperArm": [0, 86, 6], "rightLowerArm": [0, 0, 0]}, "face": {"pitch": 0}},
+    {"t": 6.3, "bones": {"rightUpperArm": [0, 0, -50], "rightLowerArm": [0, 0, -36], "chest": [-4, 0, 0], "head": [-8, 0, 0]}, "face": {"pitch": 14, "gazeY": 15, "expression": "surprised"}},
+    {"t": 7.2, "bones": {"rightUpperArm": [0, 0, -48], "rightLowerArm": [0, 0, -38], "chest": [-4, 0, 0], "head": [-8, 0, 0]}, "face": {"pitch": 14, "gazeY": 15}},
+    {"t": 7.7, "hands": {"R": "open"}},
+    {"t": 8.0, "bones": {"rightUpperArm": [0, 0, 70], "rightLowerArm": [0, 0, 5], "chest": [0, 0, 0], "head": [0, 0, 0]}, "face": {"yaw": 0, "pitch": 0, "gazeX": 0, "gazeY": 0, "expression": "neutral"}}
+  ]
+}

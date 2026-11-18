@@ -1,0 +1,12 @@
+{
+  "id": "usagi",
+  "name": "仮うさぎ",
+  "notes": "characters/usagi.md",
+  "refs": {
+    "original": ["inputs/kariusagi/kariusagi4.png", "inputs/kariusagi/仮うさぎ_キャラクターシート.png"]
+  },
+  "roles": {
+    "inputs/kariusagi/kariusagi4.png": "the original character design (front, the mouth is open here; draw the closed smile of the sheet unless told otherwise)",
+    "inputs/kariusagi/仮うさぎ_キャラクターシート.png": "the original character sheet (front / side / back and expressions)"
+  }
+}

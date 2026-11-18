@@ -1,0 +1,6 @@
+# Python tools (image generation helper, parts check, lip-sync)
+numpy>=1.26
+Pillow>=10
+svgpathtools>=1.6,<2
+# tests
+pytest>=8

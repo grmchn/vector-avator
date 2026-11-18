@@ -1,0 +1,40 @@
+/* Design tokens from specs/DESIGN.md (pop pastel template). */
+:root {
+  --primary: #5bcef7;
+  --primary-dark: #217ea7;
+  --secondary: #ff9eba;
+  --accent: #ffe082;
+  --bg: #f4fafe;
+  --surface: #ffffff;
+  --surface-2: #fff5fa;
+  --border: #d6eefb;
+  --text: #2d3d5c;
+  --text-muted: #66738d;
+  --success: #2bb98a;
+  --warning: #d97812;
+  --danger: #d94367;
+  --gradient-action: linear-gradient(135deg, #5bcef7 0%, #ff9eba 100%);
+  --gradient-hero: linear-gradient(180deg, #f4fafe 0%, #fff5fa 100%);
+  --font-display: "M PLUS Rounded 1c", system-ui, sans-serif;
+  --font-body: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --shadow-card: 0 4px 14px rgba(91, 206, 247, 0.18);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--gradient-hero);
+  background-color: var(--bg);
+  color: var(--text);
+  font: 400 14px/1.55 var(--font-body);
+  min-height: 100vh;
+}
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

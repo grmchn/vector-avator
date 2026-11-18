@@ -1,0 +1,11 @@
+{
+  "name": "reach", "label": "8. 腕を前へ伸ばす（短縮と前後の確認）", "duration": 4.0, "loop": true,
+  "keys": [
+    {"t": 0, "bones": {"leftUpperArm": [0, 0, -70], "leftLowerArm": [0, 0, -5], "rightUpperArm": [0, 0, 70], "rightLowerArm": [0, 0, 5]}, "hands": {"L": "open", "R": "open"}},
+    {"t": 0.8, "bones": {"rightUpperArm": [0, 45, 25], "rightLowerArm": [0, 0, -10]}, "hands": {"R": "point"}},
+    {"t": 1.6, "bones": {"rightUpperArm": [0, 80, 5], "rightLowerArm": [0, 0, 0]}},
+    {"t": 2.2, "bones": {"rightUpperArm": [0, 80, 5], "rightLowerArm": [0, 60, 0]}},
+    {"t": 2.8, "bones": {"rightUpperArm": [0, 40, 40], "rightLowerArm": [0, 0, -90]}, "hands": {"R": "open"}},
+    {"t": 4.0, "bones": {"rightUpperArm": [0, 0, 70], "rightLowerArm": [0, 0, 5]}}
+  ]
+}

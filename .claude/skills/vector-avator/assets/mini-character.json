@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "width": 256,
+  "height": 320,
+  "parts": [
+    {"id":"Hair_Back","label":"Back hair","parent":"Face","pivot":[128,70],"visible":true,"coverage":"Complete dome under front hair; extends behind neck.","shapes":[{"name":"whole_hair","d":"M 70 95 C 65 25 183 22 186 89 L 194 158 Q 165 178 151 149 L 98 151 Q 68 176 62 151 Z","fill":"#D78A36","stroke":"#17233A","width":4}]},
+    {"id":"Arm_L","label":"Screen left arm","parent":"Torso","pivot":[93,174],"visible":true,"coverage":"Rounded shoulder extends inside torso before arm descends.","shapes":[{"name":"complete_arm","d":"M 93 158 C 76 154 70 181 61 202 C 51 224 68 235 78 216 L 106 179 Q 108 163 93 158 Z","fill":"#FFD6B6","stroke":"#17233A","width":4}]},
+    {"id":"Arm_R","label":"Screen right arm","parent":"Torso","pivot":[163,174],"visible":true,"coverage":"Rounded shoulder overlaps torso, tested at opposite rotation.","shapes":[{"name":"complete_arm","d":"M 163 158 C 180 154 186 181 195 202 C 205 224 188 235 178 216 L 150 179 Q 148 163 163 158 Z","fill":"#FFD6B6","stroke":"#17233A","width":4}]},
+    {"id":"Leg_L","label":"Left full leg","parent":"Torso","pivot":[111,216],"visible":true,"coverage":"Upper thigh extends behind lower shirt up to y=205.","shapes":[{"name":"leg","d":"M 96 205 L 123 205 L 121 284 Q 120 298 101 292 Z","fill":"#284C79","stroke":"#17233A","width":4}]},
+    {"id":"Leg_R","label":"Right full leg","parent":"Torso","pivot":[145,216],"visible":true,"coverage":"Upper thigh extends behind lower shirt up to y=205.","shapes":[{"name":"leg","d":"M 133 205 L 160 205 L 155 292 Q 136 298 135 284 Z","fill":"#284C79","stroke":"#17233A","width":4}]},
+    {"id":"Torso","label":"Complete shirt","parent":null,"pivot":[128,210],"visible":true,"coverage":"Complete chest, shoulders and waist; arms continue underneath.","shapes":[{"name":"shirt","d":"M 100 154 Q 128 143 156 154 Q 171 162 174 179 L 160 186 L 165 233 Q 128 245 91 233 L 96 186 L 82 179 Q 85 162 100 154 Z","fill":"#5FCEC6","stroke":"#17233A","width":4}]},
+    {"id":"Face","label":"Whole head and neck","parent":"Torso","pivot":[128,146],"visible":true,"coverage":"Whole oval head including forehead beneath fringe; neck continues into shirt.","shapes":[{"name":"neck","d":"M 116 130 L 140 130 L 142 157 Q 128 169 114 157 Z","fill":"#FFD6B6","stroke":"#17233A","width":4},{"name":"full_face","d":"M 78 83 C 74 36 179 34 179 83 L 177 111 C 171 155 87 156 80 112 Z","fill":"#FFD6B6","stroke":"#17233A","width":4}]},
+    {"id":"Eye_L","label":"Left open eye","parent":"Face","pivot":[105,100],"visible":true,"coverage":"Face marking; no hidden boundary.","shapes":[{"name":"eye","d":"M 99 95 C 99 88 111 88 111 95 L 111 106 C 111 113 99 113 99 106 Z","fill":"#17233A","stroke":null,"width":0}]},
+    {"id":"Eye_R","label":"Right open eye","parent":"Face","pivot":[151,100],"visible":true,"coverage":"Face marking; no hidden boundary.","shapes":[{"name":"eye","d":"M 145 95 C 145 88 157 88 157 95 L 157 106 C 157 113 145 113 145 106 Z","fill":"#17233A","stroke":null,"width":0}]},
+    {"id":"Mouth_Closed","label":"Closed smile","parent":"Face","pivot":[128,123],"visible":true,"coverage":"Independent facial line.","shapes":[{"name":"smile","d":"M 118 122 Q 128 132 138 122","fill":null,"stroke":"#17233A","width":3}]},
+    {"id":"Hair_Front","label":"Front hair","parent":"Face","pivot":[128,60],"visible":true,"coverage":"Front fringe overlays whole forehead rather than defining face cutout.","shapes":[{"name":"fringe","d":"M 76 91 C 63 38 181 20 182 84 L 161 77 L 151 57 Q 135 84 114 84 L 119 66 Q 99 92 76 91 Z","fill":"#D78A36","stroke":"#17233A","width":4}]},
+    {"id":"Lids","label":"Closed eye variant","parent":"Face","pivot":[128,100],"visible":false,"coverage":"Replaces both open eyes; does not overlay them.","shapes":[{"name":"lids","d":"M 98 101 Q 105 94 112 101 M 144 101 Q 151 94 158 101","fill":null,"stroke":"#17233A","width":3}]},
+    {"id":"Mouth_Open","label":"Open mouth variant","parent":"Face","pivot":[128,123],"visible":false,"coverage":"Replaces closed smile.","shapes":[{"name":"open","d":"M 120 121 C 120 115 136 115 136 121 C 136 135 120 135 120 121 Z","fill":"#A8465D","stroke":"#17233A","width":2}]}
+  ],
+  "qa": [
+    {"name":"reveal_forehead_shoulders","kind":"reveal","hide":["Hair_Front","Torso"],"check":"Forehead is complete; shoulders are rounded and upper thighs extend under shirt."},
+    {"name":"move_left","kind":"move","transforms":{"Hair_Front":{"dx":5,"deg":-10},"Arm_L":{"deg":12},"Arm_R":{"deg":-12}},"check":"Fringe exposes skin, shoulders remain attached; no transparent breaks."},
+    {"name":"move_right","kind":"move","transforms":{"Hair_Front":{"dx":-5,"deg":10},"Arm_L":{"deg":-12},"Arm_R":{"deg":12}},"check":"Opposite rotations preserve the attachments."},
+    {"name":"expression","kind":"expression","hide":["Eye_L","Eye_R","Mouth_Closed"],"show":["Lids","Mouth_Open"],"check":"Open eyes and closed smile disappear completely."}
+  ]
+}
