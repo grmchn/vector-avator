@@ -1,0 +1,397 @@
+{
+ "format": "explainer-content",
+ "version": 1,
+ "id": "vector_howto",
+ "title": {
+  "ja": "一枚絵から、動くベクターキャラへ",
+  "en": "From One Drawing to a Moving Vector Character"
+ },
+ "note": "方式 V の作り方を紹介する解説動画。画面は Remotion の場面ごとの演出（visual.clip）",
+ "lines": [
+  {
+   "id": "L01",
+   "scene": "hook",
+   "visual": {
+    "clip": "hook"
+   },
+   "gist": "一枚の絵から、動くキャラが作れることを見せる（つかみ）",
+   "terms": [
+    "一枚の絵"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "emphasize"
+    }
+   ],
+   "seconds": 3.9,
+   "reference": {
+    "ja": "一枚の絵から、こんなふうに動くキャラが作れちゃいます。",
+    "en": "From a single drawing, you can make a character that moves like this!"
+   }
+  },
+  {
+   "id": "L02",
+   "scene": "title",
+   "visual": {
+    "clip": "title"
+   },
+   "gist": "今回は、その仕組みを全部見せると予告する",
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "introduce"
+    }
+   ],
+   "seconds": 3.2,
+   "reference": {
+    "ja": "今日はその仕組みを、ぜんぶ見せちゃいますね。",
+    "en": "Today, I'll show you the whole trick."
+   }
+  },
+  {
+   "id": "L03",
+   "scene": "restyle",
+   "visual": {
+    "clip": "restyle"
+   },
+   "gist": "最初の工程：画像生成で、元の絵をフラットでシンプルな絵柄にそろえる",
+   "terms": [
+    "画像生成"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "enumerate",
+     "n": 1
+    }
+   ],
+   "seconds": 5.7,
+   "reference": {
+    "ja": "まずは画像生成で、元の絵を、フラットでシンプルな絵柄にそろえます。",
+    "en": "First, an image model redraws the original in one flat, simple style."
+   }
+  },
+  {
+   "id": "L04",
+   "scene": "turntable",
+   "visual": {
+    "clip": "turntable"
+   },
+   "gist": "次の工程：動画生成 AI でキャラを一回転させ、横や後ろの形を知る",
+   "terms": [
+    "動画生成AI"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "point_at"
+    },
+    {
+     "tag": "enumerate",
+     "n": 2
+    }
+   ],
+   "seconds": 6.5,
+   "reference": {
+    "ja": "次に、動画生成AIでくるっと一回転。横や後ろの形がわかります。",
+    "en": "Next, a video model spins it all the way around, so we can see the sides and the back."
+   }
+  },
+  {
+   "id": "L05",
+   "scene": "sheets",
+   "visual": {
+    "clip": "sheets"
+   },
+   "gist": "回転を見ながら、四面図と表情のシートを作る。これが設計図になる",
+   "terms": [
+    "四面図",
+    "設計図"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "enumerate",
+     "n": 3
+    },
+    {
+     "tag": "emphasize",
+     "term": "設計図"
+    }
+   ],
+   "seconds": 5.6,
+   "reference": {
+    "ja": "それを見ながら、四面図と表情のシートを作ります。これが設計図です。",
+    "en": "From there, we make a turnaround sheet and a face sheet. That's the blueprint."
+   }
+  },
+  {
+   "id": "L06",
+   "scene": "fable_intro",
+   "visual": {
+    "clip": "fable_intro"
+   },
+   "gist": "ここが要：Fable 5.2 がシートを見て、部品を 1 つずつゼロから描き起こす",
+   "terms": [
+    "Fable 5.2",
+    "ゼロから"
+   ],
+   "emotion": "surprise",
+   "tags": [
+    {
+     "tag": "surprise"
+    },
+    {
+     "tag": "emphasize",
+     "term": "ゼロから"
+    }
+   ],
+   "seconds": 8.0,
+   "reference": {
+    "ja": "ここからが肝。Fable 5.2 が、シートを見て、パーツを一個ずつゼロから描き起こします。",
+    "en": "Now the secret sauce. Fable 5.2 studies the sheets and redraws every part, one by one, from scratch."
+   }
+  },
+  {
+   "id": "L07",
+   "scene": "fable_code",
+   "visual": {
+    "clip": "fable_code"
+   },
+   "gist": "絵をなぞるのではなく、曲線を描くプログラムを自分で書く。塗りだけで、線はない",
+   "terms": [
+    "プログラム"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "contrast"
+    }
+   ],
+   "seconds": 6.8,
+   "reference": {
+    "ja": "なぞるんじゃなくて、曲線を描くプログラムを自分で書くんです。塗りだけで、線はなし。",
+    "en": "It doesn't trace. It writes its own program that draws the curves. Fills only, no lines."
+   }
+  },
+  {
+   "id": "L08",
+   "scene": "fable_hidden",
+   "visual": {
+    "clip": "fable_hidden"
+   },
+   "gist": "前髪の下のおでこや、腕に隠れる胴体など、見えない所も描き足す",
+   "terms": [
+    "見えない所"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "point_at"
+    },
+    {
+     "tag": "emphasize",
+     "term": "見えない所"
+    }
+   ],
+   "seconds": 6.7,
+   "reference": {
+    "ja": "しかも、前髪の下のおでこや、腕に隠れる胴体まで、見えない所も描き足します。",
+    "en": "It even draws what you can't see, like the forehead under the bangs and the body behind the arms."
+   }
+  },
+  {
+   "id": "L09",
+   "scene": "fable_check",
+   "visual": {
+    "clip": "fable_check"
+   },
+   "gist": "最後に元の絵と重ねて自分で確かめる。約 50 個の部品を約 20 分で仕上げる",
+   "terms": [
+    "セルフチェック"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "enumerate",
+     "n": 4
+    }
+   ],
+   "seconds": 7.2,
+   "reference": {
+    "ja": "最後は元の絵と重ねてセルフチェック。50 個くらいのパーツを、20 分ほどで仕上げます。",
+    "en": "Then it overlays the original and checks its own work. About fifty parts in twenty minutes."
+   }
+  },
+  {
+   "id": "L10",
+   "scene": "skeleton",
+   "visual": {
+    "clip": "skeleton"
+   },
+   "gist": "動きは共通の骨格から作る。腕は描いた絵ではなく、3D の骨から毎フレーム作る",
+   "terms": [
+    "共通の骨格"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "introduce"
+    },
+    {
+     "tag": "contrast"
+    }
+   ],
+   "seconds": 8.4,
+   "reference": {
+    "ja": "動きは共通の骨格から。腕は描いた絵じゃなくて、3D の骨から毎フレーム作ってるんです。",
+    "en": "Motion comes from one shared skeleton. The arms aren't drawings: they're built from 3D bones every frame."
+   }
+  },
+  {
+   "id": "L11",
+   "scene": "gestures",
+   "visual": {
+    "clip": "gestures"
+   },
+   "gist": "だから肘が曲がり、手の形が変わり、腕を体の前にも後ろにも回せる",
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "emphasize"
+    }
+   ],
+   "seconds": 6.5,
+   "reference": {
+    "ja": "だから肘も曲がるし、手の形も変わるし、体の前にも後ろにも回せます。",
+    "en": "So elbows bend, hands change shape, and arms can swing in front of or behind the body."
+   }
+  },
+  {
+   "id": "L12",
+   "scene": "outline",
+   "visual": {
+    "clip": "outline"
+   },
+   "gist": "輪郭線は、似た色どうしが重なる所にだけ自動で引く",
+   "terms": [
+    "輪郭線"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "point_at"
+    }
+   ],
+   "seconds": 5.4,
+   "reference": {
+    "ja": "輪郭線は、似ている色どうしが重なる所にだけ、自動で引きます。",
+    "en": "And the outlines? They're drawn automatically, only where similar colors overlap."
+   }
+  },
+  {
+   "id": "L13",
+   "scene": "physics",
+   "visual": {
+    "clip": "physics"
+   },
+   "gist": "耳やしっぽは、ばねの計算で揺れる",
+   "terms": [
+    "ばね"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "agree"
+    }
+   ],
+   "seconds": 3.4,
+   "reference": {
+    "ja": "耳やしっぽは、ばねの計算でぷるん。",
+    "en": "Ears and tails bounce on springs."
+   }
+  },
+  {
+   "id": "L14",
+   "scene": "parallax",
+   "visual": {
+    "clip": "parallax"
+   },
+   "gist": "首を振ると、部品が奥行きごとにずれて立体的に見える",
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "demo",
+     "motion": "turn"
+    }
+   ],
+   "seconds": 4.9,
+   "reference": {
+    "ja": "首を振ると、パーツが奥行きごとにずれて、立体っぽく見えます。",
+    "en": "Turn the head, and each layer shifts by its depth, so it looks 3D."
+   }
+  },
+  {
+   "id": "L15",
+   "scene": "alive",
+   "visual": {
+    "clip": "alive"
+   },
+   "gist": "呼吸とまばたきを常に入れている。生きている感じが大事",
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "demo",
+     "motion": "idle"
+    }
+   ],
+   "seconds": 4.6,
+   "reference": {
+    "ja": "呼吸とまばたきも、ずっと入れてます。生きてる感じ、大事。",
+    "en": "Breathing and blinking never stop. That's what makes them feel alive."
+   }
+  },
+  {
+   "id": "L16",
+   "scene": "outro",
+   "visual": {
+    "clip": "outro"
+   },
+   "gist": "キャラ専用のコードはない。新しいキャラも、人が絵を描かずに 1 時間ちょっとで動かせる",
+   "terms": [
+    "1 時間ちょっと"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "emphasize"
+    }
+   ],
+   "seconds": 7.4,
+   "reference": {
+    "ja": "キャラ専用のコードはゼロ。新しい子も、人が絵を描かずに、1 時間ちょっとで動かせます。",
+    "en": "There's zero character-specific code. A new character can be moving in about an hour, with no hand drawing."
+   }
+  },
+  {
+   "id": "L17",
+   "scene": "end",
+   "visual": {
+    "clip": "end"
+   },
+   "gist": "一枚の絵から動くキャラができるまでの紹介を終える",
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "conclude"
+    }
+   ],
+   "seconds": 4.1,
+   "reference": {
+    "ja": "以上、一枚絵から動くキャラができるまで、でした！",
+    "en": "And that's how one drawing becomes a moving character!"
+   }
+  }
+ ]
+}

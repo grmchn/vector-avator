@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "explainer-content.schema.json",
+  "title": "Explainer content layer (docs/explainer-format.md §2)",
+  "type": "object",
+  "required": ["format", "version", "id", "title", "lines"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "explainer-content" },
+    "version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "title": { "$ref": "#/$defs/langText" },
+    "note": { "type": "string" },
+    "lines": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/line" } }
+  },
+  "$defs": {
+    "langText": {
+      "type": "object", "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z]{2}$" },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "line": {
+      "type": "object",
+      "required": ["id", "scene", "gist"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+        "scene": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "visual": {
+          "type": "object", "minProperties": 1, "additionalProperties": false,
+          "properties": {
+            "image": { "type": "string", "minLength": 1 },
+            "text": { "$ref": "#/$defs/langText" },
+            "clip": { "type": "string", "minLength": 1 }
+          }
+        },
+        "gist": { "type": "string", "minLength": 1 },
+        "terms": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "emotion": { "enum": ["calm", "joy", "surprise", "trouble"] },
+        "tags": { "type": "array", "items": { "$ref": "#/$defs/tag" } },
+        "seconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 30 },
+        "reference": { "$ref": "#/$defs/langText" },
+        "note": { "type": "string" }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "required": ["tag"],
+      "additionalProperties": false,
+      "properties": {
+        "tag": { "enum": ["greet", "introduce", "enumerate", "emphasize", "point_at", "question", "think",
+                          "surprise", "agree", "contrast", "conclude", "demo"] },
+        "strength": { "enum": ["weak", "mid", "strong"] },
+        "at": { "enum": ["line", "start", "end"] },
+        "term": { "type": "string", "minLength": 1 },
+        "n": { "type": "integer", "minimum": 1 },
+        "region": { "type": "string", "minLength": 1 },
+        "motion": { "enum": ["turn", "idle"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "tag": { "const": "enumerate" } } }, "then": { "required": ["n"] } },
+        { "if": { "properties": { "tag": { "const": "demo" } } }, "then": { "required": ["motion"] } },
+        { "if": { "not": { "properties": { "tag": { "const": "enumerate" } } } }, "then": { "not": { "required": ["n"] } } },
+        { "if": { "not": { "properties": { "tag": { "const": "demo" } } } }, "then": { "not": { "required": ["motion"] } } },
+        { "if": { "not": { "properties": { "tag": { "const": "point_at" } } } }, "then": { "not": { "required": ["region"] } } },
+        { "if": { "required": ["term"] }, "then": { "not": { "required": ["at"] } } }
+      ]
+    }
+  }
+}

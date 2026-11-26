@@ -74,7 +74,10 @@ function cap(c: Pt, from: Pt, to: Pt, dir: Pt, out: Pt[]) {
   }
 }
 
-function capsule(s: Sample[], roundStart: boolean, roundEnd: boolean, scale = 1): Ring {
+/** A capsule along the samples. `endArc` (with roundEnd false) cuts the far end along half an
+ *  ellipse that bows by endArc * half width toward the start, like the band boundaries: the
+ *  centre of the cut sits at the last sample and its sides reach forward (a sleeve opening). */
+function capsule(s: Sample[], roundStart: boolean, roundEnd: boolean, scale = 1, endArc?: number): Ring {
   const left = s.map((q) => addp(q.p, mul(q.n, (q.w * scale) / 2)));
   const right = s.map((q) => sub(q.p, mul(q.n, (q.w * scale) / 2)));
   const ring: Pt[] = [...left];
@@ -82,6 +85,16 @@ function capsule(s: Sample[], roundStart: boolean, roundEnd: boolean, scale = 1)
   const dEnd = norm(sub(last.p, s[s.length - 2].p));
   const dStart = norm(sub(first.p, s[1].p));
   if (roundEnd) cap(last.p, left[left.length - 1], right[right.length - 1], dEnd, ring);
+  else if (endArc) {
+    const h = (last.w * scale) / 2, t: Pt = [last.n[1], -last.n[0]];
+    ring.pop(); // replaced by the arc's first point
+    for (let i = 0; i <= 12; i++) {
+      const c = h - (2 * h * i) / 12;
+      const e = endArc * h * (Math.sqrt(Math.max(0, 1 - (c / h) ** 2)) - 1);
+      ring.push(addp(addp(last.p, mul(last.n, c)), mul(t, e)));
+    }
+    right.pop();
+  }
   ring.push(...[...right].reverse());
   if (roundStart) cap(first.p, right[0], left[0], dStart, ring);
   // drop near-duplicate points and close
@@ -132,7 +145,18 @@ export function buildArm(inp: ArmInput): ArmGeom {
   const split = inp.upperLen / (inp.upperLen + inp.foreLen);
   const up = segment(S, E, ws, we, mul(perp(du), outward), inp.curve * lu, 0, split);
   const fo = segment(E, W, we, ww, mul(perp(df), outward), inp.curve * lf * 0.6, split, 1);
-  const capU = capsule(up, true, true), capF = capsule(fo, true, true);
+  const capU = capsule(up, true, true);
+  const bow = (a: Pt, b: Pt, za: number, zb: number) => {
+    const l2 = Math.hypot(b[0] - a[0], b[1] - a[1]), l3 = Math.hypot(l2, zb - za) || 1;
+    return -Math.sign(zb - za) * Math.sqrt(Math.max(0, 1 - (l2 / l3) ** 2)); // along the segment
+  };
+  // a forearm cut flat at the wrist (wristCap "flat") keeps its band boundaries straight too:
+  // arcs bowing toward the elbow above a straight cut read as rounded the wrong way
+  const bowU = bow(S, E, inp.zS, inp.zE), bowF = def.wristCap === "flat" ? 0 : bow(E, W, inp.zE, inp.zW);
+  // wristCap "arc": the forearm ends along the same arc as its band boundaries (a sleeve opening
+  // seen in depth; owner, a twin-tail character). "flat": a straight cut. Otherwise a round cap.
+  const capF = def.wristCap === "arc" ? capsule(fo, true, false, 1, bowF)
+    : capsule(fo, true, def.wristCap !== "flat");
   const sil = safe(() => polygonClipping.union([capU], [capF]), [[capU], [capF]]);
 
   // sample of a segment's centre line at an exact parameter T (band boundaries between samples)
@@ -157,11 +181,6 @@ export function buildArm(inp: ArmInput): ArmGeom {
   // the viewer its visible front half projects to half an ellipse that bows toward the far
   // end. Straight cuts there left a V-shaped notch of the far band beside the near end.
   const eps = 1e-6;
-  const bow = (a: Pt, b: Pt, za: number, zb: number) => {
-    const l2 = Math.hypot(b[0] - a[0], b[1] - a[1]), l3 = Math.hypot(l2, zb - za) || 1;
-    return -Math.sign(zb - za) * Math.sqrt(Math.max(0, 1 - (l2 / l3) ** 2)); // along the segment
-  };
-  const bowU = bow(S, E, inp.zS, inp.zE), bowF = bow(E, W, inp.zE, inp.zW);
   const bandRing = (seg: Sample[], k: number, from: number, to: number, extStart: boolean, extEnd: boolean): Ring | null => {
     const inner = seg.filter((q) => q.T > from + eps && q.T < to - eps);
     const s0 = at(seg, from), s1 = at(seg, to);
@@ -216,10 +235,28 @@ export function buildArm(inp: ArmInput): ArmGeom {
   // each strip runs half a width past its ends so the upper-arm and forearm shades overlap at
   // the elbow (no notch); the silhouette clip trims the excess. Both rings get the same
   // winding so their overlap stays filled.
-  const extended = (seg: Sample[]) => [ext(seg[0], seg[1]), ...seg, ext(seg[seg.length - 1], seg[seg.length - 2])]
-    .map((q, i, a) => (i === 0 || i === a.length - 1 ? { ...q, p: addp(q.p, mul(norm(sub(q.p, a[i === 0 ? 1 : a.length - 2].p)), -q.w * 0.5)) } : q));
-  const shadeRing = (seg: Sample[]) => { const sd = pick(seg); return orient(strip(extended(seg), (q) => sd * q.w * 0.8, (q) => sd * (q.w / 2 - q.w * ratio))); };
-  const shU = shadeRing(up), shF = shadeRing(fo);
+  // With a seamless hand (drawn under the forearm), the forearm's round wrist cap lies over the
+  // hand, so the forearm strip stops at the wrist: shade on the cap would read as a shadow on
+  // the hand.
+  const extended = (seg: Sample[], extendEnd = true) => [ext(seg[0], seg[1]), ...seg, ...(extendEnd ? [ext(seg[seg.length - 1], seg[seg.length - 2])] : [])]
+    .map((q, i, a) => (i === 0 || (extendEnd && i === a.length - 1) ? { ...q, p: addp(q.p, mul(norm(sub(q.p, a[i === 0 ? 1 : a.length - 2].p)), -q.w * 0.5)) } : q));
+  const shadeRing = (seg: Sample[], extendEnd = true) => {
+    const sd = pick(seg);
+    const pts = extended(seg, extendEnd);
+    // without the wrist extension the strip tapers to nothing over the last ~0.9 width before
+    // the wrist, so it does not end in a hard square edge
+    const taper = new Map<Sample, number>();
+    if (!extendEnd) {
+      let d = 0;
+      for (let i = pts.length - 1; i >= 0; i--) {
+        if (i < pts.length - 1) d += Math.hypot(pts[i + 1].p[0] - pts[i].p[0], pts[i + 1].p[1] - pts[i].p[1]);
+        const u = Math.min(1, d / (pts[i].w * 0.9));
+        taper.set(pts[i], u * u * (3 - 2 * u));
+      }
+    }
+    return orient(strip(pts, (q) => sd * q.w * 0.8, (q) => sd * (q.w / 2 - q.w * ratio * (taper.get(q) ?? 1))));
+  };
+  const shU = shadeRing(up), shF = shadeRing(fo, !def.seamlessHand);
   const shade: MultiPolygon = [[shU], [shF]];
   // a separate piece shows only its own segment's bands and shade, clipped to its silhouette
   const parts = {

@@ -1,0 +1,14 @@
+{
+ "note": "visual.image ごとの図の指示（Codex imagegen、tools/explainer/make_images.py）。画像には文字を入れない（文字は合成でカードの下に visual.text を添える）。",
+ "size": "1536x1024",
+ "style": "Flat vector illustration for a friendly explainer video. Soft pastel palette (sky blue, mint, peach, lavender, cream), rounded chunky shapes, no outlines or only thin outlines in a slightly darker shade of the fill, no gradients, no shadows except one soft flat shadow. Plain warm off-white background, generous empty margin, centered composition, landscape 3:2. Absolutely no text, letters, numbers, labels, logos or watermarks anywhere in the image. Simple, readable at small size.",
+ "images": {
+  "agi": "One friendly round robot with a glowing brain icon on its chest at the center, surrounded in a circle by small icons of many different kinds of work: an open book, a paintbrush and palette, a calculator, a music note, a stethoscope, a wrench, a globe, a chef's hat. Thin dotted lines connect each icon to the robot. Concept: one AI that can do many different kinds of intellectual work.",
+  "narrow_vs_general": "Split composition with a soft vertical divider. Left half: a small robot inside a narrow box holding only one tool, two overlapping speech bubbles (translation). Right half: a bigger cheerful robot with several arms, juggling many tools at once: a paintbrush, a book, a calculator, a music note, a wrench. Clear contrast between doing one thing and doing everything.",
+  "rsi": "A cheerful robot standing next to a large blueprint drawing of itself, holding a wrench and a screwdriver and upgrading its own head; small sparkles and an upward arrow shape near its head. Concept: an AI improving itself.",
+  "rsi_loop": "A circular loop of three robots going clockwise, each robot a little bigger and brighter than the previous one, curved arrows between them, the loop spiraling slightly upward with speed lines. Concept: smarter AI builds an even smarter AI, again and again, faster and faster.",
+  "singularity": "A winding road of technology icons (gears, chips, light bulbs, small rockets) that runs from the lower left and suddenly bends sharply upward toward a bright glowing star burst in the sky. Concept: a turning point where progress suddenly accelerates.",
+  "singularity_curve": "A simple chart without axes labels: a smooth curve that stays nearly flat for a long time and then shoots almost straight up; the top of the curve disappears into soft pastel clouds and mist, so what lies above is hidden. Concept: the future beyond this point cannot be predicted.",
+  "summary": "Three stepping stones in a row from left to right, connected by big rounded arrows: on the first stone a robot with a brain icon, on the second stone a robot holding a wrench inside a circular arrow loop, on the third stone a bright glowing star burst. Concept: a flow of three steps."
+ }
+}

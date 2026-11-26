@@ -126,3 +126,40 @@ def test_render_transforms_rotate_about_pivot():
     x = m[0] * px + m[2] * py + m[4]
     y = m[1] * px + m[3] * py + m[5]
     assert math.isclose(x, px, abs_tol=1e-6) and math.isclose(y, py, abs_tol=1e-6)
+
+
+def add_hands(a, kinds):
+    """add hand drawings (hidden variants) of the given kinds for both sides"""
+    for s in "LR":
+        for k in kinds:
+            a["parts"].append(dict(part(f"hand_{s}_{k}", 720 if s == "L" else 304, 1160, 28, 34,
+                                        bone=("left" if s == "L" else "right") + "Hand", layer="body", parent="torso",
+                                        group=f"hand_{s}", variants=[k]), visible=False))
+    return a
+
+
+def test_legacy_hand_set_is_a_warning_only():
+    E, W = cp.check(mini())
+    assert not any("hand" in e for e in E)
+    assert any("legacy hand set" in w and "palm_up" in w for w in W)
+
+
+def test_full_hand_set_passes():
+    a = add_hands(mini(), ("palm_up", "point_front", "peace", "thumbs_up"))
+    E, W = cp.check(a)
+    assert not any("hand" in e for e in E), E
+    assert not any("legacy hand set" in w for w in W)
+
+
+def test_partial_new_hand_set_is_an_error():
+    a = add_hands(mini(), ("palm_up",))  # one of the new shapes: all of them are now required
+    E, _ = cp.check(a)
+    for k in ("peace", "thumbs_up", "point_front"):
+        assert any(f"hand_L_{k}" in e for e in E), k
+
+
+def test_point_front_alone_keeps_the_legacy_set():
+    a = add_hands(mini(), ("point_front",))
+    E, W = cp.check(a)
+    assert not any("hand" in e for e in E)
+    assert any("legacy hand set" in w for w in W)

@@ -1,0 +1,15 @@
+{
+  "_doc": "Screen layout of the explainer video, shared by simple_compose.py (where things are drawn) and perform.py (where the presenter points and looks). Fractions of the frame width/height.",
+  "size": [1920, 1080],
+  "presenter": {"cx": 0.27, "crop": 0.6, "ph": 0.84, "py": 0.02, "aspect": 1.7777778, "head": [0.5, 0.3]},
+  "card": {"cx": 0.73, "cy": 0.42, "w": 0.44},
+  "subtitle": {"y": 0.89},
+  "regions": {
+    "card":   {"x": 0.51, "y": 0.17, "w": 0.44, "h": 0.5},
+    "tl":     {"x": 0.0,  "y": 0.0,  "w": 0.1,  "h": 0.1},
+    "tr":     {"x": 0.9,  "y": 0.0,  "w": 0.1,  "h": 0.1},
+    "bl":     {"x": 0.0,  "y": 0.9,  "w": 0.1,  "h": 0.1},
+    "br":     {"x": 0.9,  "y": 0.9,  "w": 0.1,  "h": 0.1},
+    "center": {"x": 0.45, "y": 0.45, "w": 0.1,  "h": 0.1}
+  }
+}

@@ -1,27 +1,30 @@
 // Minimal viewer for method V: one character, motions, face controls, lip-sync and PNG export.
 // Depends only on src/core and src/renderers/vector (no Three.js), so it can be published alone.
-import { parsePose, emptyPose, type Pose, type PoseJson } from "../core/pose";
+import { parsePose, emptyPose, HAND_SHAPES, type HandShape, type Pose, type PoseJson } from "../core/pose";
 import { composePose } from "../core/compose";
 import {
   DEFAULT_FACE, EYE_STATES, MOUTH_SHAPES, EXPRESSIONS, EYE_LABEL, MOUTH_LABEL, EXPRESSION_LABEL,
   type FaceState,
 } from "../core/face";
 import type { CharacterConfig } from "../core/renderer";
+import { parseFraming } from "../core/renderer";
 import { Blinker } from "../core/blink";
+import { Idler } from "../core/idle";
+import { quatFromEulerDeg, quatMul, IDENTITY } from "../core/math";
 import { parseMotion, samplePose, sampleFace, motionTime, type Motion, type MotionJson } from "../core/motion";
 import { textToVisemes, mouthAt, type VisemeKey } from "../core/lipsync";
 import { VectorRenderer } from "../renderers/vector/vectorRenderer";
 import { HAND_PRESETS, DEFAULT_HAND, type HandPreset } from "../renderers/vector/outline";
 
-/** Motions that need parts which are not published (turned body views). */
-const HIDDEN_MOTION = /^turn_/;
+/** Motions that only make sense with the turned body / head drawings (shown with a mark). */
+const TURN_MOTION = /^(turn|stage_greeting)/;
 
 const poseFiles = import.meta.glob("../../data/poses/*.json", { eager: true, import: "default" }) as Record<string, PoseJson>;
 const charFiles = import.meta.glob("../../data/characters/*.json", { eager: true, import: "default" }) as Record<string, CharacterConfig>;
 const motionFiles = import.meta.glob("../../data/motions/**/*.json", { eager: true, import: "default" }) as Record<string, MotionJson>;
 
 export const MOTIONS: Record<string, Motion> = {};
-for (const json of Object.values(motionFiles)) if (!HIDDEN_MOTION.test(json.name)) MOTIONS[json.name] = parseMotion(json);
+for (const json of Object.values(motionFiles)) MOTIONS[json.name] = parseMotion(json);
 export const POSES: Record<string, { label: string; pose: Pose }> = {};
 for (const json of Object.values(poseFiles)) POSES[json.name!] = { label: json.description ?? json.name!, pose: parsePose(json) };
 export const CHARACTERS: Record<string, CharacterConfig> = {};
@@ -41,6 +44,16 @@ interface State {
   face: FaceState;
   autoBlink: boolean;
   say: string;
+  /** hand shape forced on both hands ("" = the motion's / automatic) */
+  hand: HandShape | "";
+  /** turned body / head drawings (body30/60/90.json, head30/60/90.json): an option, off by
+   *  default (URL vBody=1). Off, the figure stays a front view and the head turns +-30 deg by
+   *  parallax; on, the turn engine draws the body and head up to +-90 deg. */
+  turn: boolean;
+  /** body turn (deg) added to the pose's hips; +-15 without the turned drawings */
+  bodyYaw: number;
+  /** idle micro-motion over the motion (weight shift, src/core/idle.ts); on by default (idle=0 off) */
+  idle: boolean;
 }
 
 function stateFromUrl(): State {
@@ -59,6 +72,10 @@ function stateFromUrl(): State {
     },
     autoBlink: q.get("blink") !== "0",
     say: q.get("say") ?? "",
+    hand: HAND_SHAPES.includes(q.get("hand") as HandShape) ? (q.get("hand") as HandShape) : "",
+    turn: q.get("vBody") === "1" || (q.get("vBody") === null && TURN_MOTION.test(q.get("motion") ?? "")),
+    bodyYaw: num("bodyYaw", 0),
+    idle: q.get("idle") !== "0",
   };
 }
 
@@ -70,6 +87,7 @@ export class VViewer {
   private renderer: VectorRenderer | null = null;
   private loadToken = 0;
   private blinker = new Blinker({ seed: 7 });
+  private idler = (() => { const q = new URLSearchParams(location.search); return new Idler({ sway: q.has("idleSway") ? Number(q.get("idleSway")) : undefined }); })();
   /** mouth track: from text (looped) or from a lip-sync JSON (with optional audio) */
   private visemes: VisemeKey[] = [];
   private sayLoop = 0;
@@ -138,6 +156,10 @@ export class VViewer {
       return;
     }
     this.setStatus("warn", "◷ 読み込み中");
+    // the renderer reads its switches from the URL: the turned drawings are loaded only with vBody=1
+    const u = new URL(location.href);
+    u.searchParams.set("vBody", this.state.turn ? "1" : "0");
+    history.replaceState(null, "", u);
     const r = new VectorRenderer();
     const rect = this.els.preview.getBoundingClientRect();
     const q = new URLSearchParams(location.search);
@@ -145,7 +167,7 @@ export class VViewer {
       await r.init({
         container: this.els.preview, character,
         width: Math.round(rect.width) || 960, height: Math.round(rect.height) || 540,
-        framing: q.get("framing") === "face" ? "face" : "body", debug: q.has("debug"),
+        framing: parseFraming(q), debug: q.has("debug"),
       });
     } catch (e) {
       console.error(e);
@@ -183,11 +205,22 @@ export class VViewer {
     const m = MOTIONS[this.state.motion];
     const mt = this.motionClock(time);
     const body = m ? samplePose(m, mt) : POSES[this.state.pose]?.pose ?? emptyPose();
-    const face = this.faceAt(mt, m ? mt : time);
+    let face = this.faceAt(mt, m ? mt : time);
     if (m && this.seekEl && this.playing && this.timeOverride === null) this.seekEl.value = String(motionTime(m, mt));
-    r.setPose(composePose(body, face));
+    let pose = body;
+    const by = this.bodyYawLimited();
+    if (by) pose = { ...pose, bones: { ...pose.bones, hips: quatMul(quatFromEulerDeg(0, by, 0), pose.bones.hips ?? IDENTITY) } };
+    if (this.state.idle) ({ pose, face } = this.idler.apply(pose, face, m ? mt : time));
+    const posed = composePose(pose, face);
+    if (this.state.hand) posed.hands = { L: this.state.hand, R: this.state.hand };
+    r.setPose(posed);
     r.setFace(face);
     r.render(time);
+  }
+
+  private bodyYawLimited(): number {
+    const lim = this.state.turn ? 90 : 15;
+    return Math.max(-lim, Math.min(lim, this.state.bodyYaw));
   }
 
   savePng(): void {
@@ -252,8 +285,11 @@ export class VViewer {
     }
     // motion + play / seek
     const motionBox = document.createElement("div");
-    const msel = select([["", "なし（静止ポーズ）"], ...Object.values(MOTIONS).map((m) => [m.name, m.label] as [string, string])], () => s.motion, (v) => {
+    const mlabel = (m: Motion) => (TURN_MOTION.test(m.name) ? `${m.label}（回転の絵）` : m.label);
+    const msel = select([["", "なし（静止ポーズ）"], ...Object.values(MOTIONS).map((m) => [m.name, mlabel(m)] as [string, string])], () => s.motion, (v) => {
       s.motion = v; restart(); updSeek(); updPlay();
+      // a turning motion on the front drawings alone would squash the flat body to a line
+      if (TURN_MOTION.test(v) && !s.turn) { s.turn = true; this.buildControls(); void this.load(); }
     });
     const row = document.createElement("div");
     row.className = "seg";
@@ -278,12 +314,25 @@ export class VViewer {
     group("モーション", motionBox);
     group("ポーズ（モーションなしのとき）", select(Object.entries(POSES).map(([k, p]) => [k, p.label]), () => s.pose, (v) => { s.pose = v; }));
 
-    group("顔の左右", slider(-30, 30, () => s.face.yaw, (v) => { s.face.yaw = v; }));
+    group("手の形（両手に固定）", seg<HandShape | "">([["", "動作どおり"], ["open", "開き"], ["palm", "手のひら"], ["palm_up", "手のひら上"], ["point", "指差し"], ["fist", "グー"], ["peace", "ピース"], ["thumbs_up", "いいね"]],
+      () => s.hand, (v) => { s.hand = v; }));
+
+    // turned drawings (option): reload the renderer, and rebuild the controls for the wider ranges
+    group("体と頭の回転の絵（30・60・90°）", seg([["off", "使わない"], ["on", "使う"]] as ["off" | "on", string][], () => (s.turn ? "on" : "off"), (v) => {
+      s.turn = v === "on";
+      if (!s.turn) s.face.yaw = Math.max(-30, Math.min(30, s.face.yaw));
+      this.buildControls();
+      void this.load();
+    }));
+    const lim = s.turn ? 90 : 30;
+    group("体の向き", slider(s.turn ? -90 : -15, s.turn ? 90 : 15, () => this.bodyYawLimited(), (v) => { s.bodyYaw = v; }));
+    group("顔の左右", slider(-lim, lim, () => s.face.yaw, (v) => { s.face.yaw = v; }));
     group("顔の上下", slider(-20, 20, () => s.face.pitch, (v) => { s.face.pitch = v; }));
     group("首の傾き", slider(-20, 20, () => s.face.roll, (v) => { s.face.roll = v; }));
     group("目", seg(EYE_STATES.map((e) => [e, EYE_LABEL[e]]), () => s.face.eye, (v) => { s.face.eye = v; }));
     group("口", seg(MOUTH_SHAPES.map((m) => [m, MOUTH_LABEL[m]]), () => s.face.mouth, (v) => { s.face.mouth = v; }));
     group("表情", seg(EXPRESSIONS.map((x) => [x, EXPRESSION_LABEL[x]]), () => s.face.expression, (v) => { s.face.expression = v; }));
+    group("待機の微動（重心の移動）", seg([["off", "しない"], ["on", "する"]] as ["off" | "on", string][], () => (s.idle ? "on" : "off"), (v) => { s.idle = v === "on"; }));
     group("自動まばたき", seg([["off", "しない"], ["on", "する"]] as ["off" | "on", string][], () => (s.autoBlink ? "on" : "off"), (v) => { s.autoBlink = v === "on"; }));
 
     // lip-sync: text preset, or a JSON track (+ optional audio) from tools/lipsync/align.py

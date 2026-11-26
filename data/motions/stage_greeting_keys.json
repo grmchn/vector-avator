@@ -1,0 +1,2855 @@
+{
+ "name": "stage_greeting_keys",
+ "label": "舞台挨拶（振り向きと歩き出しを手付けで改善）",
+ "duration": 19.29,
+ "loop": false,
+ "walkStart": 10.5,
+ "keys": [
+  {
+   "t": 0,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "spine": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "neck": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0,
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   },
+   "hands": {
+    "L": "open",
+    "R": "open"
+   }
+  },
+  {
+   "t": 0.4,
+   "face": {
+    "expression": "smile"
+   }
+  },
+  {
+   "t": 0.9,
+   "hips": [
+    0.006,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 1.4,
+   "hips": [
+    -0.004,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 1.6,
+   "face": {
+    "gazeX": 10,
+    "gazeY": 4
+   }
+  },
+  {
+   "t": 1.85,
+   "bones": {
+    "hips": [
+     0,
+     4.800000000000001,
+     0
+    ],
+    "chest": [
+     0,
+     2.4000000000000004,
+     0
+    ],
+    "head": [
+     0,
+     3.2,
+     0
+    ]
+   }
+  },
+  {
+   "t": 2.3,
+   "bones": {
+    "hips": [
+     0,
+     12.0,
+     0
+    ],
+    "chest": [
+     0,
+     6.0,
+     0
+    ],
+    "head": [
+     0,
+     8.0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ]
+   },
+   "hips": [
+    0.004,
+    -0.008,
+    0
+   ],
+   "squash": 0.97,
+   "face": {
+    "yaw": 7,
+    "pitch": 9,
+    "roll": -3,
+    "gazeX": 6,
+    "gazeY": 8,
+    "expression": "smile",
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 2.4,
+   "hands": {
+    "L": "palm"
+   }
+  },
+  {
+   "t": 2.65,
+   "bones": {
+    "hips": [
+     0,
+     12.0,
+     0
+    ],
+    "chest": [
+     0,
+     6.0,
+     0
+    ],
+    "head": [
+     0,
+     8.0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     8,
+     22
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     35
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.012,
+    0,
+    0
+   ],
+   "squash": 1.02,
+   "face": {
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 2.95,
+   "bones": {
+    "leftLowerArm": [
+     0,
+     0,
+     8
+    ]
+   },
+   "face": {
+    "roll": -5,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 3.25,
+   "bones": {
+    "leftLowerArm": [
+     0,
+     0,
+     38
+    ]
+   },
+   "face": {
+    "roll": -1,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 3.55,
+   "bones": {
+    "leftLowerArm": [
+     0,
+     0,
+     8
+    ]
+   },
+   "face": {
+    "roll": -5,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 3.85,
+   "bones": {
+    "leftLowerArm": [
+     0,
+     0,
+     38
+    ]
+   },
+   "face": {
+    "roll": -1,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 4.15,
+   "bones": {
+    "leftLowerArm": [
+     0,
+     0,
+     8
+    ]
+   },
+   "face": {
+    "roll": -5,
+    "mouth": "o"
+   }
+  },
+  {
+   "t": 4.45,
+   "bones": {
+    "leftLowerArm": [
+     0,
+     0,
+     38
+    ]
+   },
+   "face": {
+    "roll": -1,
+    "mouth": "o"
+   }
+  },
+  {
+   "t": 4.75,
+   "bones": {
+    "hips": [
+     0,
+     12.0,
+     0
+    ],
+    "chest": [
+     0,
+     6.0,
+     0
+    ],
+    "head": [
+     0,
+     8.0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     8,
+     22
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     8
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "mouth": "sil",
+    "roll": -3
+   }
+  },
+  {
+   "t": 5.1,
+   "bones": {
+    "hips": [
+     0,
+     8.399999999999999,
+     0
+    ],
+    "chest": [
+     0,
+     4.199999999999999,
+     0
+    ],
+    "head": [
+     0,
+     5.6,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 2,
+    "pitch": 2,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0
+   }
+  },
+  {
+   "t": 5.2,
+   "hands": {
+    "L": "open"
+   }
+  },
+  {
+   "t": 5.5,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "expression": "smile"
+   }
+  },
+  {
+   "t": 5.7,
+   "face": {
+    "gazeX": -10,
+    "gazeY": 4
+   }
+  },
+  {
+   "t": 5.95,
+   "bones": {
+    "hips": [
+     0,
+     -4.800000000000001,
+     0
+    ],
+    "chest": [
+     0,
+     -2.4000000000000004,
+     0
+    ],
+    "head": [
+     0,
+     -3.2,
+     0
+    ]
+   }
+  },
+  {
+   "t": 6.4,
+   "bones": {
+    "hips": [
+     0,
+     -12.0,
+     0
+    ],
+    "chest": [
+     0,
+     -6.0,
+     0
+    ],
+    "head": [
+     0,
+     -8.0,
+     0
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ]
+   },
+   "hips": [
+    -0.004,
+    -0.008,
+    0
+   ],
+   "squash": 0.97,
+   "face": {
+    "yaw": -7,
+    "pitch": 9,
+    "roll": 3,
+    "gazeX": -6,
+    "gazeY": 8,
+    "expression": "smile",
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 6.5,
+   "hands": {
+    "R": "palm"
+   }
+  },
+  {
+   "t": 6.75,
+   "bones": {
+    "hips": [
+     0,
+     -12.0,
+     0
+    ],
+    "chest": [
+     0,
+     -6.0,
+     0
+    ],
+    "head": [
+     0,
+     -8.0,
+     0
+    ],
+    "rightUpperArm": [
+     0,
+     -8,
+     -22
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -35
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.012,
+    0,
+    0
+   ],
+   "squash": 1.02,
+   "face": {
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 7.05,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -8
+    ]
+   },
+   "face": {
+    "roll": 5,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 7.35,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -38
+    ]
+   },
+   "face": {
+    "roll": 1,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 7.65,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -8
+    ]
+   },
+   "face": {
+    "roll": 5,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 7.95,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -38
+    ]
+   },
+   "face": {
+    "roll": 1,
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 8.25,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -8
+    ]
+   },
+   "face": {
+    "roll": 5,
+    "mouth": "o"
+   }
+  },
+  {
+   "t": 8.55,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -38
+    ]
+   },
+   "face": {
+    "roll": 1,
+    "mouth": "o"
+   }
+  },
+  {
+   "t": 8.85,
+   "bones": {
+    "hips": [
+     0,
+     -12.0,
+     0
+    ],
+    "chest": [
+     0,
+     -6.0,
+     0
+    ],
+    "head": [
+     0,
+     -8.0,
+     0
+    ],
+    "rightUpperArm": [
+     0,
+     -8,
+     -22
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -8
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "mouth": "sil",
+    "roll": 3
+   }
+  },
+  {
+   "t": 9.2,
+   "bones": {
+    "hips": [
+     0,
+     -8.399999999999999,
+     0
+    ],
+    "chest": [
+     0,
+     -4.199999999999999,
+     0
+    ],
+    "head": [
+     0,
+     -5.6,
+     0
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": -2,
+    "pitch": 2,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0
+   }
+  },
+  {
+   "t": 9.3,
+   "hands": {
+    "R": "open"
+   }
+  },
+  {
+   "t": 9.6,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "expression": "smile"
+   }
+  },
+  {
+   "t": 9.85,
+   "bones": {
+    "chest": [
+     10,
+     0,
+     0
+    ],
+    "head": [
+     8,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "pitch": -6,
+    "eye": "closed"
+   }
+  },
+  {
+   "t": 10.4,
+   "bones": {
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "pitch": 0,
+    "eye": "open"
+   }
+  },
+  {
+   "t": 10.5,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "gazeX": 10,
+    "gazeY": 0,
+    "expression": "smile"
+   }
+  },
+  {
+   "t": 10.7,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     4,
+     0
+    ],
+    "head": [
+     0,
+     18,
+     0
+    ]
+   },
+   "hips": [
+    -0.03,
+    -0.006,
+    0
+   ],
+   "squash": 0.98,
+   "face": {
+    "yaw": 8,
+    "gazeX": 8
+   }
+  },
+  {
+   "t": 10.95,
+   "bones": {
+    "hips": [
+     0,
+     40,
+     0
+    ],
+    "chest": [
+     0,
+     8,
+     0
+    ],
+    "head": [
+     0,
+     20,
+     0
+    ],
+    "leftUpperLeg": [
+     -14,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.02,
+    0.004,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 6,
+    "gazeX": 4
+   }
+  },
+  {
+   "t": 11.15,
+   "bones": {
+    "hips": [
+     0,
+     62,
+     0
+    ],
+    "chest": [
+     0,
+     6,
+     0
+    ],
+    "head": [
+     0,
+     14,
+     0
+    ],
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.01,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 11.35,
+   "bones": {
+    "hips": [
+     0,
+     84,
+     0
+    ],
+    "chest": [
+     0,
+     3,
+     0
+    ],
+    "head": [
+     0,
+     4,
+     0
+    ],
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     10,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.0,
+    0.004,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 0,
+    "gazeX": 0
+   }
+  },
+  {
+   "t": 11.55,
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     -2,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -0.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.0,
+    -0.004,
+    0
+   ],
+   "squash": 0.99,
+   "ease": "linear"
+  },
+  {
+   "t": 11.75,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.0513,
+    0.005,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 11.95,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     -2,
+     0
+    ],
+    "leftUpperLeg": [
+     20,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -20,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -8.75,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     8.75,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.1026,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 12.13,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.2197,
+    0.0065,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 12.31,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -26,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     26,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     11.375,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -11.375,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.3367,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 12.47,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.4775,
+    0.0075,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 12.63,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     30,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -30,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -13.125,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     13.125,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.6182,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 12.78,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.7727,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 12.93,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    0.9272,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 13.07,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    1.0862,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 13.21,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    1.2452,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 13.35,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    1.4041,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 13.49,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    1.5631,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 13.63,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    1.7221,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 13.77,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    1.8811,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 13.91,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.04,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 14.05,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.199,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 14.19,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.358,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 14.33,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.517,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 14.47,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.6759,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 14.61,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.8349,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 14.75,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    2.9939,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 14.89,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    3.1529,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 15.03,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    3.3118,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 15.17,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    3.4708,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 15.31,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    3.6298,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 15.45,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    3.7888,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 15.59,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    3.9478,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 15.73,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    4.1067,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 15.87,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    4.2657,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 16.01,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    4.4247,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 16.15,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    4.5837,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 16.29,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    4.7426,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 16.43,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    4.9016,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 16.57,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    5.0606,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 16.71,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    5.2196,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 16.85,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    5.3785,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 16.99,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    5.5375,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 17.13,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    5.6965,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 17.27,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    5.8555,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 17.41,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.0144,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 17.55,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.1734,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 17.69,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.3324,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 17.83,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.4914,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 17.97,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.6503,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 18.11,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.8093,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 18.25,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    6.9683,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 18.39,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    7.1273,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 18.53,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     -32,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     32,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     14.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     -14.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    7.2862,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  },
+  {
+   "t": 18.67,
+   "ease": "linear",
+   "bones": {
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    7.3657,
+    0.008,
+    0
+   ],
+   "squash": 1.01
+  },
+  {
+   "t": 18.81,
+   "ease": "linear",
+   "bones": {
+    "hips": [
+     0,
+     90,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "rightUpperLeg": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     -0.0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0.0,
+     0,
+     70
+    ]
+   },
+   "hips": [
+    7.4452,
+    -0.004,
+    0
+   ],
+   "squash": 0.99
+  }
+ ]
+}

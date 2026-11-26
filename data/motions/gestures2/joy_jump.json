@@ -1,0 +1,1435 @@
+{
+ "name": "joy_jump",
+ "label": "12. 喜びジャンプ",
+ "duration": 6.0,
+ "loop": true,
+ "source": {
+  "generator": "tools/motion/make_gestures2.py"
+ },
+ "keys": [
+  {
+   "t": 0,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "spine": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "neck": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0,
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   },
+   "hands": {
+    "L": "open",
+    "R": "open"
+   }
+  },
+  {
+   "t": 0.25,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     118
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -118
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "expression": "smile",
+    "mouth": "a"
+   },
+   "hands": {
+    "L": "fist",
+    "R": "fist"
+   }
+  },
+  {
+   "t": 0.5,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     132
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -104
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -1.08
+    ]
+   },
+   "hips": [
+    0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "a",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 0.6,
+   "hips": [
+    0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": 9,
+    "roll": -3
+   }
+  },
+  {
+   "t": 0.75,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": -11,
+    "roll": 4
+   }
+  },
+  {
+   "t": 0.88,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": 6,
+    "roll": -2
+   }
+  },
+  {
+   "t": 1.0,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     104
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -132
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     1.08
+    ]
+   },
+   "hips": [
+    -0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "e",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 1.1,
+   "hips": [
+    -0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": -9,
+    "roll": 3
+   }
+  },
+  {
+   "t": 1.25,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 11,
+    "roll": -4
+   }
+  },
+  {
+   "t": 1.38,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": -6,
+    "roll": 2
+   }
+  },
+  {
+   "t": 1.5,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     132
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -104
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -1.08
+    ]
+   },
+   "hips": [
+    0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "a",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 1.6,
+   "hips": [
+    0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": 9,
+    "roll": -3
+   }
+  },
+  {
+   "t": 1.75,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": -11,
+    "roll": 4
+   }
+  },
+  {
+   "t": 1.88,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": 6,
+    "roll": -2
+   }
+  },
+  {
+   "t": 2.0,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     104
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -132
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     1.08
+    ]
+   },
+   "hips": [
+    -0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "e",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 2.1,
+   "hips": [
+    -0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": -9,
+    "roll": 3
+   }
+  },
+  {
+   "t": 2.25,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 11,
+    "roll": -4
+   }
+  },
+  {
+   "t": 2.38,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": -6,
+    "roll": 2
+   }
+  },
+  {
+   "t": 2.5,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     132
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -104
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -1.08
+    ]
+   },
+   "hips": [
+    0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "a",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 2.6,
+   "hips": [
+    0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": 9,
+    "roll": -3
+   }
+  },
+  {
+   "t": 2.75,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": -11,
+    "roll": 4
+   }
+  },
+  {
+   "t": 2.88,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": 6,
+    "roll": -2
+   }
+  },
+  {
+   "t": 3.0,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     104
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -132
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     1.08
+    ]
+   },
+   "hips": [
+    -0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "e",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 3.1,
+   "hips": [
+    -0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": -9,
+    "roll": 3
+   }
+  },
+  {
+   "t": 3.25,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 11,
+    "roll": -4
+   }
+  },
+  {
+   "t": 3.38,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": -6,
+    "roll": 2
+   }
+  },
+  {
+   "t": 3.5,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     132
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -104
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -1.08
+    ]
+   },
+   "hips": [
+    0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "a",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 3.6,
+   "hips": [
+    0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": 9,
+    "roll": -3
+   }
+  },
+  {
+   "t": 3.75,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": -11,
+    "roll": 4
+   }
+  },
+  {
+   "t": 3.88,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": 6,
+    "roll": -2
+   }
+  },
+  {
+   "t": 4.0,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     104
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -132
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     1.08
+    ]
+   },
+   "hips": [
+    -0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "e",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 4.1,
+   "hips": [
+    -0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": -9,
+    "roll": 3
+   }
+  },
+  {
+   "t": 4.25,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 11,
+    "roll": -4
+   }
+  },
+  {
+   "t": 4.38,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": -6,
+    "roll": 2
+   }
+  },
+  {
+   "t": 4.5,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     132
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -104
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -1.08
+    ]
+   },
+   "hips": [
+    0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "a",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 4.6,
+   "hips": [
+    0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": 9,
+    "roll": -3
+   }
+  },
+  {
+   "t": 4.75,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": -11,
+    "roll": 4
+   }
+  },
+  {
+   "t": 4.88,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": 6,
+    "roll": -2
+   }
+  },
+  {
+   "t": 5.0,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     104
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -132
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     1.08
+    ]
+   },
+   "hips": [
+    -0.006,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "mouth": "e",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 5.1,
+   "hips": [
+    -0.006,
+    0.02,
+    0
+   ],
+   "squash": 1.07,
+   "face": {
+    "yaw": -9,
+    "roll": 3
+   }
+  },
+  {
+   "t": 5.25,
+   "bones": {
+    "chest": [
+     -3,
+     0,
+     0
+    ],
+    "head": [
+     -4,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    -0.003,
+    0.13,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 11,
+    "roll": -4
+   }
+  },
+  {
+   "t": 5.38,
+   "ease": "linear",
+   "hips": [
+    0,
+    0.04,
+    0
+   ],
+   "squash": 1.05,
+   "face": {
+    "yaw": -6,
+    "roll": 2
+   }
+  },
+  {
+   "t": 5.5,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -55,
+     -62
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     118
+    ],
+    "leftHand": [
+     0,
+     0,
+     10
+    ],
+    "rightUpperArm": [
+     0,
+     55,
+     62
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -118
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    -0.02,
+    0
+   ],
+   "squash": 0.9,
+   "face": {
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 5.68,
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 5.75,
+   "hands": {
+    "L": "open",
+    "R": "open"
+   }
+  },
+  {
+   "t": 6.0,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "spine": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "neck": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0,
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   }
+  }
+ ]
+}

@@ -13,15 +13,24 @@ import type { Affine, Pt } from "./vdata";
  * @param floorY   y of the sole (the bottom of the leg part)
  * @param floor    fixed point of the squash (drawing px)
  * @param squash   vertical scale of the squash (1 = none); the horizontal scale is 1/sqrt(squash)
+ * @param lift     the feet leave the floor when the hips rise above their rest height (a jump):
+ *                 the leg stretches up to LIFT_STRETCH, then keeps that length and moves up
  */
-export function plantedLegAffine(hipRest: Pt, hipNow: Pt, soleX: number, floorY: number, floor: Pt, squash = 1): Affine {
+export const LIFT_STRETCH = 1.03;
+export function plantedLegAffine(hipRest: Pt, hipNow: Pt, soleX: number, floorY: number, floor: Pt, squash = 1, lift = false): Affine {
   const sx = 1 / Math.sqrt(squash);
   // the sole is drawn where the squash will move it back to its rest place
   const px = floor[0] + (soleX - floor[0]) / sx;
   const py = floor[1] + (floorY - floor[1]) / squash;
   const span = hipRest[1] - floorY || -1;
   const mx = 1 / sx;                                    // the foot keeps its width after the squash
-  const ky = (hipNow[1] - py) / span;
+  let ky = (hipNow[1] - py) / span;
   const shx = (hipNow[0] - px - mx * (hipRest[0] - soleX)) / span;
-  return [mx, 0, shx, ky, px - mx * soleX - shx * floorY, py - ky * floorY];
+  let ty = py - ky * floorY;
+  if (lift && ky > LIFT_STRETCH) {
+    // airborne: keep the leg length and carry the whole leg up with the hips
+    ky = LIFT_STRETCH;
+    ty = hipNow[1] - ky * hipRest[1];
+  }
+  return [mx, 0, shx, ky, px - mx * soleX - shx * floorY, ty];
 }

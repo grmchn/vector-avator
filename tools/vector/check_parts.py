@@ -16,10 +16,17 @@ BONES = {"hips", "spine", "chest", "neck", "head", "leftShoulder", "rightShoulde
          "rightLowerLeg", "leftFoot", "rightFoot"}
 LAYERS = {"body", "hair_back", "ear", "head", "feature", "hair_side", "hair_front"}
 SIDES = ("L", "R")
+HANDS_LEGACY = ("open", "point", "fist", "palm")
 REQUIRED = (["torso", "neck", "head", "leg_L", "leg_R", "nose"]
             + [f"eye_{s}_{k}" for s in SIDES for k in ("white", "iris", "pupil", "half", "closed")]
             + [f"mouth_{k}" for k in ("closed", "a", "i", "u", "e", "o", "smile", "surprise", "trouble")]
-            + [f"hand_{s}_{k}" for s in SIDES for k in ("open", "point", "fist", "palm")])
+            + [f"hand_{s}_{k}" for s in SIDES for k in HANDS_LEGACY])
+# hand set (.claude/skills/vector-avator/references/parts-spec.md 4.3): the original four are always required. The newer
+# four are required as soon as a character has palm_up, peace or thumbs_up (point_front alone
+# does not count: it was optional before); a character with none is the legacy set (warning
+# only), so existing characters keep passing
+HANDS_NEW = ("palm_up", "point_front", "peace", "thumbs_up")
+HANDS_TRIGGER = ("palm_up", "peace", "thumbs_up")
 SKELETON_KEYS = (["hips", "chest", "neck", "head", "head_center", "head_radius"]
                  + [f"{j}_{s}" for j in ("shoulder", "elbow", "wrist", "hip", "ankle") for s in SIDES])
 EXPRESSIONS = ("normal", "smile", "surprise", "trouble")
@@ -46,7 +53,9 @@ def side_of(pid):
 
 
 # ---------------------------------------------------------------- structural checks
-def check(art):
+def check(art, relax=frozenset()):
+    """relax: 'far_face' = the far eye / brow / cheek may be missing (side head);
+    'sides' = skip the screen-side checks of _L/_R parts and shoulders (body turned 60 / 90 deg)."""
     E, W = [], []
     parts = art.get("parts", [])
     ids = [p.get("id") for p in parts]
@@ -64,8 +73,27 @@ def check(art):
     if len(set(ids)) != len(ids):
         E.append("duplicate part ids")
     for r in REQUIRED:
+        # the far side is the character's right, or its left for the opposite-direction heads (far_L)
+        if "far_face" in relax and re.match(rf"(eye|brow|cheek)_{'L' if 'far_L' in relax else 'R'}(_|$)", r):
+            continue
         if r not in by_id:
             E.append(f"missing required part: {r}")
+    new_hands = [f"hand_{s}_{k}" for s in SIDES for k in HANDS_NEW]
+    if any(f"hand_{s}_{k}" in by_id for s in SIDES for k in HANDS_TRIGGER):
+        for h in new_hands:
+            if h not in by_id:
+                E.append(f"missing required part: {h} (hand set of {', '.join(HANDS_LEGACY + HANDS_NEW)})")
+    else:
+        miss = sorted({h.split("_", 2)[2] for h in new_hands if h not in by_id})
+        W.append(f"legacy hand set: add {', '.join(miss)} for each side (.claude/skills/vector-avator/references/parts-spec.md 4.3)")
+    for pid, p in by_id.items():  # hands are drawn from the wrist (pivot) downward
+        if re.fullmatch(r"hand_[LR]_[a-z_]+", pid) and p.get("shapes"):
+            try:
+                bb = part_bbox(p)
+            except Exception:
+                bb = None
+            if bb and p.get("pivot") and bb[3] <= p["pivot"][1] + 5:
+                W.append(f"{pid}: nothing is drawn below the pivot (a hand is drawn from the wrist toward +Y)")
     chain_ids = {c.get("id") for c in art.get("chains", [])}
     groups = {}
     for p in parts:
@@ -112,6 +140,8 @@ def check(art):
             E.append(f"group {gname}: the visible parts must make up exactly one variant (got {sorted(g['default'])})")
     for s in SIDES:
         for k in ("eye", "hand"):
+            if k == "eye" and s == ("L" if "far_L" in relax else "R") and "far_face" in relax:
+                continue
             if f"{k}_{s}" not in groups:
                 E.append(f"missing group {k}_{s}")
     if "mouth" not in groups:
@@ -122,7 +152,7 @@ def check(art):
         v = sk.get(k)
         if not (isinstance(v, list) and len(v) == 2 and all(isinstance(n, (int, float)) for n in v)):
             E.append(f"skeleton.{k} must be [x, y]")
-    if not E or all(not e.startswith("skeleton") for e in E):
+    if "sides" not in relax and (not E or all(not e.startswith("skeleton") for e in E)):
         try:
             if sk["shoulder_L"][0] <= sk["shoulder_R"][0]:
                 E.append("skeleton: shoulder_L must be on the screen right (character's own left)")
@@ -181,8 +211,8 @@ def check(art):
         E.append("parallax.feature must not be negative (features are on the front of the head)")
 
     # head turn tunables (.claude/skills/vector-avator/references/parts-spec.md 3.5.1, src/renderers/vector/head.ts HeadTurn)
-    HEAD_TURN = {"radius": (0.5, 2.5), "rimFalloff": (1, 4), "shift": (0, 0.4), "domeFloor": (0, 1), "irisRoll": (0, 0.5), "pupilDepth": (1, 2), "irisSqueeze": (0, 1),
-                 "earSqueeze": (0, 0.6), "earIn": (0, 1.5), "earInner": (0, 0.3), "noseDepth": (0.8, 1.5), "pitchGain": (0, 2)}
+    HEAD_TURN = {"radius": (0.5, 2.5), "rimFalloff": (1, 4), "shift": (0, 0.4), "domeFloor": (0, 1), "irisRoll": (0, 0.5), "pupilDepth": (1, 2), "irisSqueeze": (0, 1), "lidFollow": (0, 1.5),
+                 "earSqueeze": (0, 0.6), "earIn": (0, 1.5), "earInner": (0, 0.3), "earWidthTurn": (0, 1.5), "noseDepth": (0.8, 1.5), "pitchGain": (0, 2)}
     ht = art.get("headTurn", {})
     if not isinstance(ht, dict):
         E.append("headTurn must be an object")
@@ -215,7 +245,7 @@ def check(art):
     cx = sk.get("hips", [Wd / 2 if Wd else 512])[0] if isinstance(sk.get("hips"), list) else 512
     for p in parts:
         s = side_of(p.get("id", ""))
-        if not s or not p.get("shapes"):
+        if "sides" in relax or not s or not p.get("shapes"):
             continue
         try:
             bb = part_bbox(p)
@@ -467,7 +497,7 @@ def skill_build(art, cid):
         return r.returncode == 0, (r.stdout + r.stderr)[-800:]
 
 
-# ---------------------------------------------------------------- turned body view (id056)
+# ---------------------------------------------------------------- turned body view
 VIEW_SKELETON = ["hips", "chest", "neck", "head", "shoulder_L", "shoulder_R", "hip_L", "hip_R", "ankle_L", "ankle_R"]
 NUM = re.compile(r"[MLCQZmlcqz]|-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 
@@ -486,6 +516,62 @@ def map_path(d, dx, dy):
     return " ".join(out)
 
 
+def swap_side(s):
+    """Character's left <-> right in an id (bodyView.ts swapSide)."""
+    s = re.sub(r"_L(?=$|_)", "\x01", s)
+    s = re.sub(r"_R(?=$|_)", "_L", s).replace("\x01", "_R")
+    return re.sub(r"^right", "left", re.sub(r"^left", "\x02", s)).replace("\x02", "right") if s.startswith(("left", "right")) else s
+
+
+def mirror_path(d, cx):
+    """Mirror an absolute M/L/C/Q/Z path about x = cx."""
+    out, xi = [], True
+    for t in NUM.findall(d):
+        if t.isalpha():
+            out.append(t)
+            xi = True
+            continue
+        v = 2 * cx - float(t) if xi else float(t)
+        out.append(f"{v:.2f}")
+        xi = not xi
+    return " ".join(out)
+
+
+def mirror_view(v):
+    """The view drawn the other way round (bodyView.ts mirrorView): mirrored about the hips (a
+    head view: its head joint), sides swapped. Used to put an opposite-direction head (
+    head<deg>_opp.json) on the mirrored body drawing, as the renderer does."""
+    cx = (v["skeleton"].get("hips") or v["skeleton"]["head"])[0]
+    f = lambda q: [2 * cx - q[0], q[1]]
+    w = copy.deepcopy(v)
+    w["yaw"] = -v["yaw"]
+    w["skeleton"] = {swap_side(k): (q if k == "head_radius" else f(q)) for k, q in v["skeleton"].items()}
+    for q in w["parts"]:
+        q["id"] = swap_side(q["id"])
+        if q.get("pivot"):
+            q["pivot"] = f(q["pivot"])
+        for k in ("bone", "parent", "group"):
+            if isinstance(q.get(k), str):
+                q[k] = swap_side(q[k])
+        for sh in q["shapes"]:
+            sh["d"] = mirror_path(sh["d"], cx)
+    for c in w.get("chains", []):
+        c["id"], c["bone"] = swap_side(c["id"]), swap_side(c["bone"])
+        c["parts"] = [swap_side(i) for i in c.get("parts", [])]
+        c["root"], c["tip"] = f(c["root"]), f(c["tip"])
+    if w.get("arms"):
+        a = w["arms"]
+        w["arms"] = {"L": a.get("R"), "R": a.get("L")}
+        for k in "LR":
+            if w["arms"][k] and w["arms"][k].get("attach"):
+                w["arms"][k]["attach"] = swap_side(w["arms"][k]["attach"])
+    if w.get("order"):
+        w["order"] = [swap_side(i) for i in w["order"]]
+    if w.get("headOffset"):
+        w["headOffset"] = [-w["headOffset"][0], w["headOffset"][1]]
+    return w
+
+
 def head_ids(art):
     hc = {c["id"] for c in art.get("chains", []) if c.get("bone") == "head"}
     return {p["id"] for p in art["parts"] if p.get("bone") == "head" or p.get("bone") in hc}
@@ -495,8 +581,25 @@ def is_hand_sleeve(p):
     return bool(p.get("group")) and re.match(r"(hand|sleeve)_", p["group"]) is not None
 
 
-def compose_view(front, view):
-    """Same composition as src/renderers/vector/bodyView.ts composeView."""
+def front_body_view(front):
+    """The front body as a view (to check a side head before the 90 deg body exists)."""
+    heads = head_ids(front)
+    return {"format": "so-chara-vector-view/1", "view": "body0", "yaw": 0, "skeleton": dict(front["skeleton"]),
+            "parts": [p for p in front["parts"] if p["id"] not in heads and not is_hand_sleeve(p)],
+            "chains": [c for c in front.get("chains", []) if c.get("bone") != "head"]}
+
+
+def translate_part(p, dx, dy):
+    q = copy.deepcopy(p)
+    q["pivot"] = [p["pivot"][0] + dx, p["pivot"][1] + dy]
+    for sh in q["shapes"]:
+        sh["d"] = map_path(sh["d"], dx, dy)
+    return q
+
+
+def compose_view(front, view, head=None):
+    """Same composition as src/renderers/vector/bodyView.ts composeView (head: a side head
+    view, head90.json)."""
     ax = front["skeleton"]["hips"][0] - view["skeleton"]["hips"][0]
     if ax:  # place the view's hips on the front's vertical axis (alignView)
         view = copy.deepcopy(view)
@@ -509,22 +612,36 @@ def compose_view(front, view):
             c["root"] = [c["root"][0] + ax, c["root"][1]]
             c["tip"] = [c["tip"][0] + ax, c["tip"][1]]
     fs, vs = front["skeleton"], view["skeleton"]
-    dx, dy = vs["head"][0] - fs["head"][0], vs["head"][1] - fs["head"][1]
+    hsk = head["skeleton"] if head else fs
+    dx, dy = vs["head"][0] - hsk["head"][0], vs["head"][1] - hsk["head"][1]
+    if not head and view.get("headOffset"):
+        # the front head turned along with the body sits off the pivot (.claude/skills/vector-avator/references/parts-spec.md 8.2);
+        # the renderer applies it in id071
+        dx, dy = dx + view["headOffset"][0], dy + view["headOffset"][1]
     heads = head_ids(front)
     kept = {}
     for p in front["parts"]:
-        if p["id"] in heads:
-            q = copy.deepcopy(p)
-            q["pivot"] = [p["pivot"][0] + dx, p["pivot"][1] + dy]
-            for sh in q["shapes"]:
-                sh["d"] = map_path(sh["d"], dx, dy)
-            kept[p["id"]] = q
+        if p["id"] in heads and not head:
+            kept[p["id"]] = translate_part(p, dx, dy)
         elif is_hand_sleeve(p):
             kept[p["id"]] = p
+    if head:
+        for p in head["parts"]:
+            kept[p["id"]] = translate_part(p, dx, dy)
     vparts = {p["id"]: p for p in view["parts"]}
-    if view.get("order"):
-        parts = [kept.get(i) or vparts.get(i) for i in view["order"]]
-        parts = [p for p in parts if p] + [p for p in front["parts"] if is_hand_sleeve(p) and p["id"] not in view["order"]]
+    order = (head or {}).get("order") or view.get("order")
+    if head and not order:
+        order = [p["id"] for p in view["parts"]] + [p["id"] for p in head["parts"]]
+    if head and order:
+        # the body parts among themselves keep the body drawing's order (bodyView.ts withBodyOrder)
+        body = {p["id"] for p in view["parts"]}
+        own = [i for i in view["order"] if i in body] if view.get("order") else [p["id"] for p in view["parts"]]
+        listed = {i for i in order if i in body}
+        seq = iter([i for i in own if i in listed])
+        order = [next(seq, i) if i in body else i for i in order]
+    if order:
+        parts = [kept.get(i) or vparts.get(i) for i in order]
+        parts = [p for p in parts if p] + [p for p in front["parts"] if is_hand_sleeve(p) and p["id"] not in order]
     else:
         parts, k = [], 0
         for p in front["parts"]:
@@ -540,18 +657,28 @@ def compose_view(front, view):
         sh = vs.get(f"shoulder_{s}", fs[f"shoulder_{s}"])
         for j in ("elbow", "wrist"):
             sk[f"{j}_{s}"] = [sh[0] + fs[f"{j}_{s}"][0] - fs[f"shoulder_{s}"][0], sh[1] + fs[f"{j}_{s}"][1] - fs[f"shoulder_{s}"][1]]
-    sk["head_center"] = [fs["head_center"][0] + dx, fs["head_center"][1] + dy]
+    sk["head_center"] = [hsk["head_center"][0] + dx, hsk["head_center"][1] + dy]
+    if head:
+        sk["head_radius"] = list(hsk["head_radius"])
     vch = {c["id"]: c for c in view.get("chains", [])}
     hx, hy = vs["hips"][0] - fs["hips"][0], vs["hips"][1] - fs["hips"][1]
     chains = []
+    hch = {c["id"]: c for c in (head or {}).get("chains", [])}
     for c in front.get("chains", []):
         if c.get("bone") == "head":
+            if head and c["id"] not in hch:
+                continue
+            c = hch.get(c["id"], c)
             chains.append(dict(c, root=[c["root"][0] + dx, c["root"][1] + dy], tip=[c["tip"][0] + dx, c["tip"][1] + dy]))
         else:
             chains.append(vch.get(c["id"]) or dict(c, root=[c["root"][0] + hx, c["root"][1] + hy], tip=[c["tip"][0] + hx, c["tip"][1] + hy]))
     chains += [c for c in view.get("chains", []) if c["id"] not in {x["id"] for x in chains}]
     arms = {s: dict(front["arms"][s], **(view.get("arms", {}) or {}).get(s, {})) for s in "LR"}
     out = dict(front, parts=parts, skeleton=sk, chains=chains, arms=arms)
+    if head:
+        out["parallax"] = dict(front.get("parallax", {}), **head.get("parallax", {}))
+        out["headTurn"] = dict(front.get("headTurn", {}), **head.get("headTurn", {}))
+        heads = {p["id"] for p in head["parts"]}
     # QA cases for the turned body: the body without the head and the cover parts, and the
     # legs / tail swung from their pivots
     ids = {p["id"] for p in parts}
@@ -574,8 +701,10 @@ def check_view(front, view):
     E, W = [], []
     if view.get("format") != "so-chara-vector-view/1":
         E.append('view format must be "so-chara-vector-view/1"')
-    if not isinstance(view.get("yaw"), (int, float)) or not (15 < abs(view["yaw"]) <= 60):
-        E.append("view yaw must be a number of degrees (about +-30)")
+    if not isinstance(view.get("yaw"), (int, float)) or not (0 < abs(view["yaw"]) <= 90):
+        E.append("view yaw must be a number of degrees (15, 30, 45, 60, 75 or 90)")
+    if view.get("kind") == "head":
+        return check_head_view(front, view, E, W)
     for k in VIEW_SKELETON:
         v = view.get("skeleton", {}).get(k)
         if not (isinstance(v, list) and len(v) == 2):
@@ -593,6 +722,72 @@ def check_view(front, view):
     for p in view.get("parts", []):
         if p.get("bone") in fch and p["bone"] not in vch:
             W.append(f"view part {p['id']} hangs on chain {p['bone']} but the view has no chain for it (front chain shifted by the hips is used)")
+    # skeleton.head is the head pivot = centre of the neck's upper end (.claude/skills/vector-avator/references/parts-spec.md 8.2)
+    neck = next((p for p in view.get("parts", []) if p["id"] == "neck"), None)
+    hd = view.get("skeleton", {}).get("head")
+    if neck and isinstance(hd, list):
+        pts = [xy for s in neck.get("shapes", []) for xy in path_points(s.get("d", ""))]
+        if pts:
+            top = min(y for _, y in pts)
+            band = [x for x, y in pts if y < top + 40]
+            mid = (min(band) + max(band)) / 2
+            if abs(hd[0] - mid) > 8:
+                W.append(f"view skeleton.head x={hd[0]} is {hd[0] - mid:+.0f}px from the centre of the neck top (x={mid:.0f}); "
+                         "head is the pivot, put the front-head shift in headOffset")
+    ho = view.get("headOffset")
+    if ho is not None and not (isinstance(ho, list) and len(ho) == 2 and all(isinstance(v, (int, float)) for v in ho)):
+        E.append("view headOffset must be [dx, dy]")
+    return E, W
+
+
+def path_points(d: str):
+    nums = [float(v) for v in re.findall(r"-?\d+(?:\.\d+)?", d)]
+    return list(zip(nums[0::2], nums[1::2]))
+
+
+def check_head_view(front, head, E, W):
+    """Turned head (head60.json / head90.json, .claude/skills/vector-avator/references/parts-spec.md 8.3, 8.5)."""
+    for k in ("head", "head_center", "head_radius"):
+        v = head.get("skeleton", {}).get(k)
+        if not (isinstance(v, list) and len(v) == 2):
+            E.append(f"head view skeleton.{k} missing")
+    fheads = {p["id"]: p for p in front["parts"] if p["id"] in head_ids(front)}
+    for p in head.get("parts", []):
+        if p.get("layer") == "body":
+            E.append(f"head view part {p['id']}: head parts only (not layer body)")
+        f = fheads.get(p["id"])
+        if f and (f.get("group"), f.get("layer")) != (p.get("group"), p.get("layer")):
+            W.append(f"head view part {p['id']}: group/layer differ from the front ({f.get('group')}/{f.get('layer')})")
+        far = "L" if head.get("yaw", -90) > 0 else "R"   # the opposite-direction heads turn the other way
+        if abs(head.get("yaw", 90)) >= 75 and re.match(rf"(eye|brow|cheek)_{far}(_|$)", p["id"]):
+            W.append(f"head view part {p['id']}: the far eye / brow / cheek is not seen from the side")
+    hids = {p["id"] for p in head.get("parts", [])}
+    side = abs(head.get("yaw", 90)) >= 75  # the side head has no far eye / brow / cheek
+    far = "L" if head.get("yaw", -90) > 0 else "R"
+    fronts = {g for p in fheads.values() if (g := p.get("group")) and not (side and re.match(rf"(eye|brow|cheek)_{far}", g))}
+    for g in sorted(fronts):
+        want = {v for p in fheads.values() if p.get("group") == g for v in p.get("variants", [])}
+        got = {v for p in head.get("parts", []) if p.get("group") == g for v in p.get("variants", [])}
+        if want - got:
+            E.append(f"head view group {g}: missing variants {sorted(want - got)}")
+    order = head.get("order")
+    if not order:
+        E.append("head view: order (all parts incl. the body ids) is required")
+    else:
+        body = [p["id"] for p in front["parts"] if p["id"] not in fheads and not is_hand_sleeve(p)]
+        miss = [i for i in list(hids) + body if i not in order]
+        if miss:
+            E.append(f"head view order misses {miss}")
+        unknown = [i for i in order if i not in hids and i not in body and not any(i == p["id"] for p in front["parts"])]
+        if unknown:
+            E.append(f"head view order has unknown ids {unknown}")
+    fch = {c["id"] for c in front.get("chains", []) if c.get("bone") == "head"}
+    for c in head.get("chains", []):
+        if c.get("bone") != "head":
+            E.append(f"head view chain {c.get('id')}: bone must be head")
+    for p in head.get("parts", []):
+        if p.get("bone") in fch and p["bone"] not in {c["id"] for c in head.get("chains", [])}:
+            E.append(f"head view part {p['id']} hangs on chain {p['bone']} but the head view has no such chain")
     return E, W
 
 
@@ -601,8 +796,34 @@ def main_view(a):
     front = json.loads((vdir / "vector.json").read_text(encoding="utf-8"))
     view = json.loads((vdir / f"{a.view}.json").read_text(encoding="utf-8"))
     E, W = check_view(front, view)
-    art = compose_view(front, view)
-    E2, W2 = check(art)
+    if E and any("missing" in e and "skeleton" in e for e in E):
+        for e in E:
+            print("ERROR", e)
+        sys.exit(1)
+    if view.get("kind") == "head":
+        # a turned head (head60 / head90) on the body drawn at the same angle (or on the front body)
+        bpath = vdir / (a.body or f"body{abs(int(view.get('yaw', -90)))}.json")
+        opp_body = vdir / f"body{abs(int(view.get('yaw', -90)))}_opp.json"
+        if not a.body and view.get("yaw", 0) > 0 and opp_body.exists():
+            bpath = opp_body   # an opposite-direction body drawn on its own
+        body = json.loads(bpath.read_text(encoding="utf-8")) if bpath.exists() else front_body_view(front)
+        if bpath.exists() and body.get("yaw", 0) * view.get("yaw", 0) < 0:
+            body = mirror_view(body)   # an opposite-direction head on the mirrored body
+            print(f"head view on {bpath.name} (mirrored)")
+        else:
+            print(f"head view on {bpath.name if bpath.exists() else 'the front body'}")
+        same = f"body{abs(int(view.get('yaw', -90)))}.json"
+        if bpath.name == same and bpath.exists():
+            bh, hh = body["skeleton"].get("head"), view["skeleton"].get("head")
+            same = same + (" (mirrored)" if view.get("yaw", 0) > 0 else "")
+            if bh and hh and max(abs(bh[0] - hh[0]), abs(bh[1] - hh[1])) > 2:
+                W.append(f"head view skeleton.head {hh} differs from {same} skeleton.head {bh}: both are the same pivot on the same reference")
+        art = compose_view(front, body, view)
+        relax = {"far_face", "sides"} | ({"far_L"} if view.get("yaw", -90) > 0 else set())
+    else:
+        art = compose_view(front, view)
+        relax = {"sides"} if abs(view.get("yaw", 0)) >= 45 else set()
+    E2, W2 = check(art, frozenset(relax))
     E += E2
     W += W2
     err, report, _ = skill_validate(art)
@@ -614,7 +835,7 @@ def main_view(a):
         print("ERROR", e)
     print(f"{a.id} {a.view}: {len(view.get('parts', []))} body parts, {len(E)} errors, {len(W)} warnings")
     if not a.no_render and not err:
-        out = ROOT / "var/vector" / a.id / f"check_{a.view}"
+        out = ROOT / "var/vector" / a.id / (f"check_{a.view}" + (f"_on_{Path(a.body).stem}" if view.get("kind") == "head" and a.body else ""))
         out.mkdir(parents=True, exist_ok=True)
         render_all(art, a.id, out, preview_name=f"preview_{a.view}.png")
         print("review images:", out.relative_to(ROOT))
@@ -626,7 +847,8 @@ def main():
     ap.add_argument("id")
     ap.add_argument("--json", type=Path, help="vector.json path (default: public/characters/<id>/vector/vector.json)")
     ap.add_argument("--no-render", action="store_true")
-    ap.add_argument("--view", help="check a turned body view instead (e.g. body30: public/characters/<id>/vector/body30.json, .claude/skills/vector-avator/references/parts-spec.md §7)")
+    ap.add_argument("--view", help="check a turned body view instead (e.g. body30: public/characters/<id>/vector/body30.json, .claude/skills/vector-avator/references/parts-spec.md §7), or a turned head (head30 / head60 / head90, §8; head30_opp etc. for the opposite direction)")
+    ap.add_argument("--body", help="with --view head60/head90: the body view file to put the head on (default: the body at the same angle)")
     a = ap.parse_args()
     if a.view:
         return main_view(a)

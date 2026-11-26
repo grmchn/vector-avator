@@ -1,7 +1,7 @@
-// Unit tests for turned body views of method V (id056, src/renderers/vector/bodyView.ts):
+// Unit tests for turned body views of method V (src/renderers/vector/bodyView.ts):
 // side swapping, mirroring, composition of the view with the front head, and the arm turn.
 import { describe, expect, it } from "vitest";
-import { composeView, mirrorView, swapSide, mapPathD, type BodyViewDoc } from "../src/renderers/vector/bodyView";
+import { composeView, frontBodyView, mirrorView, swapSide, mapPathD, withBodyOrder, type BodyViewDoc } from "../src/renderers/vector/bodyView";
 import { VRig, len3 } from "../src/renderers/vector/vrig";
 import { type VectorDoc, type VPart } from "../src/renderers/vector/vdata";
 import { quatFromEulerDeg } from "../src/core/math";
@@ -121,6 +121,52 @@ describe("composeView", () => {
   });
 });
 
+// a side head (head90.json) carried by any body drawing
+const head90: BodyViewDoc = {
+  format: "so-chara-vector-view/1", kind: "head", yaw: -90,
+  skeleton: { head: [500, 860], head_center: [480, 640], head_radius: [200, 220] },
+  parts: [
+    part("ear_L", "head", "ear", "M520 400 L560 400 L560 500 Z"),
+    part("head", "head", "head", "M300 450 L640 450 L640 860 Z"),
+    part("eye_L_white", "head", "feature", "M330 600 L360 600 L360 640 Z", { group: "eye_L", variants: ["open"] }),
+  ],
+  order: ["tail", "leg_R", "torso", "leg_L", "head", "eye_L_white", "ear_L"],
+  parallax: { head: 0.2 },
+};
+
+describe("composeView with a side head", () => {
+  const c = composeView(front, view, head90);
+  it("replaces the front head by the side head, moved onto the body's neck", () => {
+    // body head [502, 872] (after the hips alignment) - side head [500, 860] = (+2, +12)
+    expect(c.parts.find((p) => p.id === "head")!.shapes[0].d.startsWith("M302 462")).toBe(true);
+    expect(c.skeleton.head_center).toEqual([482, 652]);
+    expect(c.skeleton.head_radius).toEqual([200, 220]);
+  });
+  it("draws in the head view's order (hands and sleeves stay)", () => {
+    expect(c.parts.map((p) => p.id)).toEqual(["tail", "leg_R", "torso", "leg_L", "head", "eye_L_white", "ear_L", "hand_L_open"]);
+  });
+  it("merges the head view's parallax over the front one", () => {
+    expect(c.parallax?.head).toBe(0.2);
+  });
+  it("drops front head chains the side head does not have", () => {
+    expect(c.chains!.map((x) => x.id)).toEqual(["tail"]);
+  });
+  it("works on the front body too", () => {
+    const f = composeView(front, frontBodyView(front), head90);
+    expect(f.skeleton.hips).toEqual(front.skeleton.hips);
+    expect(f.parts.find((p) => p.id === "torso")!.shapes[0].d).toBe(front.parts[4].shapes[0].d);
+  });
+  it("mirrors a head view about its head joint and keeps the radius", () => {
+    const m = mirrorView(head90);
+    expect(m.yaw).toBe(90);
+    expect(m.skeleton.head).toEqual([500, 860]);
+    expect(m.skeleton.head_center).toEqual([520, 640]);
+    expect(m.skeleton.head_radius).toEqual([200, 220]);
+    expect(m.parts.map((p) => p.id)).toEqual(["ear_R", "head", "eye_R_white"]);
+    expect(m.order).toContain("eye_R_white");
+  });
+});
+
 describe("VRig.rotateArms", () => {
   it("turns the arms about the shoulders without changing their lengths", () => {
     const rig = new VRig(front);
@@ -133,5 +179,56 @@ describe("VRig.rotateArms", () => {
     expect(d(rig.world.leftHand.pos, rig.world.leftLowerArm.pos)).toBeCloseTo(d(W, E), 6);
     // turning the character to its left (+yaw) brings its left arm's elbow away from the viewer
     expect(rig.world.leftLowerArm.pos[2]).toBeLessThan(E[2]);
+  });
+});
+
+describe("pickSlot (body drawing switch with hysteresis)", () => {
+  // lazy import: vectorRenderer pulls in DOM-free modules only at module level
+  const angles = [-90, -60, -30, 0, 30, 60, 90];
+  const B = (a: number, b: number) => (a + b) / 2;
+  it("switches 3 deg past the midpoints going out and 3 deg before them coming back", async () => {
+    const { pickSlot } = await import("../src/renderers/vector/vectorRenderer");
+    let s = 0;
+    const walk = (xs: number[]) => xs.map((x) => (s = pickSlot(s, x, angles, 3, B)));
+    expect(walk([10, 17, 18.5, 30, 46, 48.5, 77, 78.5, 90])).toEqual([0, 0, 30, 30, 30, 60, 60, 90, 90]);
+    expect(walk([74, 71.5, 44, 41.5, 13, 11.5, 0])).toEqual([90, 60, 60, 30, 30, 0, 0]);
+    expect(walk([-18.5, -48.5, -78.5])).toEqual([-30, -60, -90]);
+  });
+  it("jumps over several drawings at once after a seek", async () => {
+    const { pickSlot } = await import("../src/renderers/vector/vectorRenderer");
+    expect(pickSlot(0, 88, angles, 3, B)).toBe(90);
+    expect(pickSlot(90, -88, angles, 3, B)).toBe(-90);
+  });
+});
+
+describe("headOffset and the body order under a head order", () => {
+  it("shifts the front head by the body drawing's headOffset (not a head drawing)", () => {
+    const plain = composeView(front, view);
+    const off = composeView(front, { ...view, headOffset: [-18, 4] });
+    expect(off.skeleton.head_center).toEqual([plain.skeleton.head_center[0] - 18, plain.skeleton.head_center[1] + 4]);
+    expect(off.skeleton.head).toEqual(plain.skeleton.head); // the pivot stays on the neck
+    const side = composeView(front, { ...view, headOffset: [-18, 4] }, head90);
+    expect(side.skeleton.head_center).toEqual(composeView(front, view, head90).skeleton.head_center);
+  });
+  it("mirrors headOffset with the view", () => {
+    expect(mirrorView({ ...view, headOffset: [-18, 4] }).headOffset).toEqual([18, 4]);
+  });
+  it("keeps the slots of the head order but the body drawing's own body order", () => {
+    const order = ["ear_R", "leg_R", "leg_L", "torso", "tail", "head", "eye"];
+    // the body drawing has the tail behind (its parts order)
+    expect(withBodyOrder(order, view)).toEqual(["ear_R", "tail", "leg_R", "torso", "leg_L", "head", "eye"]);
+    // a body drawing with its own order
+    expect(withBodyOrder(order, { ...view, order: ["leg_R", "leg_L", "torso", "tail", "hand"] })).toEqual(order);
+  });
+});
+
+describe("headSwitchAt (head drawing switch angles)", () => {
+  it("switches front -> 60 at 30, 60 -> 90 at 75, front -> 90 at 60 deg", async () => {
+    const { headSwitchAt } = await import("../src/renderers/vector/vectorRenderer");
+    expect(headSwitchAt(0, 60)).toBe(30);
+    expect(headSwitchAt(60, 90)).toBe(75);
+    expect(headSwitchAt(0, 90)).toBe(60);
+    expect(headSwitchAt(-60, 0)).toBe(-30);
+    expect(headSwitchAt(-90, -60)).toBe(-75);
   });
 });

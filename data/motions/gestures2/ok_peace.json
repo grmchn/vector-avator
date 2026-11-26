@@ -1,0 +1,460 @@
+{
+ "name": "ok_peace",
+ "label": "14. いいね→ピース",
+ "duration": 6.0,
+ "loop": true,
+ "source": {
+  "generator": "tools/motion/make_gestures2.py"
+ },
+ "keys": [
+  {
+   "t": 0,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "spine": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "neck": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0,
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   },
+   "hands": {
+    "L": "open",
+    "R": "open"
+   }
+  },
+  {
+   "t": 0.4,
+   "hands": {
+    "R": "thumbs_up"
+   }
+  },
+  {
+   "t": 0.8,
+   "ease": "linear",
+   "bones": {
+    "rightUpperArm": [
+     0,
+     22,
+     34
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -30
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     -5,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -2.16
+    ]
+   },
+   "face": {
+    "expression": "smile",
+    "mouth": "a",
+    "yaw": -10,
+    "roll": 3
+   },
+   "hips": [
+    0.012,
+    0.0,
+    0
+   ]
+  },
+  {
+   "t": 1.0,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -36
+    ]
+   },
+   "face": {
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 2.4,
+   "bones": {
+    "rightUpperArm": [
+     0,
+     22,
+     34
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -32
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -2.52
+    ]
+   },
+   "face": {
+    "mouth": "e",
+    "yaw": -8
+   },
+   "hips": [
+    0.014,
+    0.0,
+    0
+   ]
+  },
+  {
+   "t": 2.9,
+   "bones": {
+    "rightUpperArm": [
+     0,
+     22,
+     30
+    ]
+   },
+   "face": {
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 3.0,
+   "hands": {
+    "R": "peace"
+   }
+  },
+  {
+   "t": 3.5,
+   "ease": "linear",
+   "bones": {
+    "rightUpperArm": [
+     0,
+     20,
+     18
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -52
+    ],
+    "rightHand": [
+     0,
+     0,
+     -8
+    ],
+    "head": [
+     0,
+     0,
+     5
+    ],
+    "chest": [
+     0,
+     -4,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     -1.8
+    ]
+   },
+   "face": {
+    "mouth": "i",
+    "expression": "smile",
+    "yaw": -4,
+    "roll": -3,
+    "eye": "half"
+   },
+   "hips": [
+    0.01,
+    0.0,
+    0
+   ]
+  },
+  {
+   "t": 3.7,
+   "face": {
+    "eye": "open",
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 4.8,
+   "bones": {
+    "rightLowerArm": [
+     0,
+     0,
+     -46
+    ],
+    "rightHand": [
+     0,
+     0,
+     -10
+    ]
+   },
+   "face": {
+    "yaw": -2
+   }
+  },
+  {
+   "t": 4.9,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     -1.08
+    ]
+   },
+   "hips": [
+    0.006,
+    0.0,
+    0
+   ]
+  },
+  {
+   "t": 5.3,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "spine": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "neck": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "face": {
+    "expression": "neutral",
+    "yaw": 0,
+    "roll": 0
+   }
+  },
+  {
+   "t": 5.4,
+   "hands": {
+    "R": "open"
+   }
+  },
+  {
+   "t": 5.5,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     -0.0
+    ]
+   },
+   "hips": [
+    0.0,
+    0.0,
+    0
+   ]
+  },
+  {
+   "t": 6.0,
+   "bones": {
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "leftHand": [
+     0,
+     0,
+     0
+    ],
+    "rightHand": [
+     0,
+     0,
+     0
+    ],
+    "spine": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "neck": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "squash": 1.0,
+   "face": {
+    "yaw": 0,
+    "pitch": 0,
+    "roll": 0,
+    "gazeX": 0,
+    "gazeY": 0,
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   }
+  }
+ ]
+}

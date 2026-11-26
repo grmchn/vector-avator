@@ -1,4 +1,4 @@
-<!-- Common style prompt for vector-style character sheets (the owner's vector style prompt + a section for sheets at the end). Character-specific notes live in characters/<id>.md and win over this file. -->
+<!-- Common style prompt for vector-style character sheets. Character-specific notes live in characters/<id>.md and win over this file. -->
 
 【目的・基本スタイル】
 

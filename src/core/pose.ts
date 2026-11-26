@@ -2,8 +2,27 @@
 import { IDENTITY, quatFromEulerDeg, quatNormalize, quatSlerp, vecLerp, type Quat, type Vec3 } from "./math";
 import { isKnownBone } from "./skeleton";
 
-export type HandShape = "open" | "point" | "fist" | "palm";
-export const HAND_SHAPES: HandShape[] = ["open", "point", "fist", "palm"];
+export type HandShape = "open" | "point" | "fist" | "palm" | "palm_up" | "peace" | "thumbs_up";
+export const HAND_SHAPES: HandShape[] = ["open", "point", "fist", "palm", "palm_up", "peace", "thumbs_up"];
+
+/** What to draw when a character has no drawing for a shape (docs/vector-parts.md §4.3):
+ *  the first available entry of [shape, ...HAND_FALLBACK[shape]] is used. */
+export const HAND_FALLBACK: Record<HandShape, HandShape[]> = {
+  open: [],
+  palm: ["open"],
+  palm_up: ["palm", "open"],
+  point: ["open"],
+  fist: ["open"],
+  peace: ["point", "open"],
+  thumbs_up: ["fist", "open"],
+};
+
+/** The first shape of the fallback chain that `has` accepts; `want` itself when nothing matches. */
+export function resolveHandShape(want: HandShape, has: (s: HandShape) => boolean): HandShape {
+  if (has(want)) return want;
+  for (const s of HAND_FALLBACK[want]) if (has(s)) return s;
+  return want;
+}
 
 export interface Pose {
   bones: Record<string, Quat>;
@@ -16,7 +35,15 @@ export interface Pose {
    * Renderers scale about the feet and widen by 1/sqrt(squash) (volume kept).
    */
   squash?: number;
+  /**
+   * Optional IK reach of the wrists: the wrist goes toward a point given in the
+   * renderer's view (u, v = 0..1 of the canvas width and height, may lie outside), blended
+   * over the keyed arm by w (0 = keyed arm, 1 = IK arm). Solved by the renderer (core/ik.ts).
+   */
+  reach?: { L?: ReachTarget; R?: ReachTarget };
 }
+
+export interface ReachTarget { u: number; v: number; w: number }
 
 /** JSON form: each bone is either Euler degrees [x, y, z] (XYZ) or {"q": [x, y, z, w]}. */
 export type BoneRotationJson = [number, number, number] | { q: [number, number, number, number] };

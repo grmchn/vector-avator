@@ -69,4 +69,4 @@ PNGを拡大・採色・位置測定するのは正常な作業。ピクセル�
 | まつ毛が前髪に埋まる | そのまつ毛だけ独立レイヤーへ。前髪全体を後ろへ移さない |
 
 
-<!-- source: the rebuild-character-layers skill (owner's), adapted for vector-avator -->
+<!-- source: the rebuild-character-layers skill, adapted for vector-avator -->

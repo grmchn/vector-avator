@@ -1,0 +1,317 @@
+{
+ "format": "explainer-content",
+ "version": 1,
+ "id": "agi_singularity",
+ "title": {
+  "ja": "AGI・RSI・シンギュラリティをかるく説明"
+ },
+ "note": "AI の 3 つの言葉を、初めて聞く人向けにかるく説明する解説動画。画面の右に、行ごとの図か文字。 行の長さの目安（seconds）は、reference をかなに開いたモーラ数を 1 秒あたり 6 モーラで割ったもの。",
+ "lines": [
+  {
+   "id": "L01",
+   "scene": "intro",
+   "visual": {
+    "text": {
+     "ja": "AGI・RSI・シンギュラリティ"
+    }
+   },
+   "gist": "あいさつして、自分の名前を名乗る",
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "greet"
+    }
+   ],
+   "seconds": 2.0,
+   "reference": {
+    "ja": "こんにちは、（キャラ名）です。"
+   },
+   "note": "キャラ名を名乗る"
+  },
+  {
+   "id": "L02",
+   "scene": "intro",
+   "visual": {
+    "text": {
+     "ja": "AGI・RSI・シンギュラリティ"
+    }
+   },
+   "gist": "AI の話でよく聞く 3 つの言葉を、これからかるく説明すると予告する",
+   "terms": [
+    "AGI",
+    "RSI",
+    "シンギュラリティ"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "introduce"
+    }
+   ],
+   "seconds": 7.5,
+   "reference": {
+    "ja": "今日は、AI の話でよく聞く、AGI、RSI、シンギュラリティを、かるく説明します。"
+   }
+  },
+  {
+   "id": "L03",
+   "scene": "agi",
+   "visual": {
+    "image": "agi",
+    "text": {
+     "ja": "AGI ＝ 汎用人工知能"
+    }
+   },
+   "gist": "1 つめ：AGI は「汎用人工知能」。人間のように、いろいろな分野の知的な仕事をこなせる AI のこと",
+   "terms": [
+    "AGI",
+    "汎用人工知能"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "enumerate",
+     "n": 1
+    },
+    {
+     "tag": "point_at",
+     "region": "card"
+    },
+    {
+     "tag": "emphasize",
+     "term": "汎用人工知能"
+    }
+   ],
+   "seconds": 9.5,
+   "reference": {
+    "ja": "ひとつめ、AGI は、汎用人工知能。人間のように、いろいろな分野の仕事をこなせる AI のことです。"
+   }
+  },
+  {
+   "id": "L04",
+   "scene": "agi",
+   "visual": {
+    "image": "narrow_vs_general",
+    "text": {
+     "ja": "得意分野だけ ↔ 分野を選ばない"
+    }
+   },
+   "gist": "今の多くの AI は、翻訳や画像づくりなど得意分野が決まっている。AGI は分野を選ばないところが違う",
+   "terms": [
+    "得意分野",
+    "分野を選ばない"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "contrast"
+    },
+    {
+     "tag": "emphasize",
+     "term": "分野を選ばない"
+    }
+   ],
+   "seconds": 10.5,
+   "reference": {
+    "ja": "今の AI の多くは、翻訳や画像づくりなど、得意分野が決まっています。AGI は、分野を選ばないのがちがいです。"
+   }
+  },
+  {
+   "id": "L05",
+   "scene": "rsi",
+   "visual": {
+    "image": "rsi",
+    "text": {
+     "ja": "RSI ＝ 再帰的自己改善"
+    }
+   },
+   "gist": "2 つめ：RSI は「再帰的自己改善」。AI が自分自身を改良すること",
+   "terms": [
+    "RSI",
+    "再帰的自己改善"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "enumerate",
+     "n": 2
+    },
+    {
+     "tag": "point_at",
+     "region": "card"
+    },
+    {
+     "tag": "emphasize",
+     "term": "再帰的自己改善"
+    }
+   ],
+   "seconds": 7.5,
+   "reference": {
+    "ja": "ふたつめ、RSI は、再帰的自己改善。AI が、自分自身を改良することです。"
+   }
+  },
+  {
+   "id": "L06",
+   "scene": "rsi",
+   "visual": {
+    "image": "rsi_loop",
+    "text": {
+     "ja": "賢くなる → もっと賢く作る → …"
+    }
+   },
+   "gist": "賢くなった AI が、もっと賢い AI を作り、それがさらに賢い AI を作る。改良がくり返されて、どんどん速くなる",
+   "terms": [
+    "くり返し"
+   ],
+   "emotion": "surprise",
+   "tags": [
+    {
+     "tag": "emphasize"
+    },
+    {
+     "tag": "emphasize",
+     "term": "くり返し"
+    }
+   ],
+   "seconds": 11.5,
+   "reference": {
+    "ja": "賢くなった AI が、もっと賢い AI を作り、それがさらに賢い AI を作る。このくり返しで、改良がどんどん速くなります。"
+   }
+  },
+  {
+   "id": "L07",
+   "scene": "singularity",
+   "visual": {
+    "image": "singularity",
+    "text": {
+     "ja": "シンギュラリティ ＝ 技術的特異点"
+    }
+   },
+   "gist": "3 つめ：シンギュラリティは「技術的特異点」。改良が止まらなくなり、技術の進歩が一気に加速する転換点のこと",
+   "terms": [
+    "シンギュラリティ",
+    "技術的特異点"
+   ],
+   "emotion": "calm",
+   "tags": [
+    {
+     "tag": "enumerate",
+     "n": 3
+    },
+    {
+     "tag": "point_at",
+     "region": "card"
+    },
+    {
+     "tag": "emphasize",
+     "term": "技術的特異点"
+    }
+   ],
+   "seconds": 9.5,
+   "reference": {
+    "ja": "みっつめ、シンギュラリティは、技術的特異点。改良が止まらなくなって、技術の進歩が一気に加速する点のことです。"
+   }
+  },
+  {
+   "id": "L08",
+   "scene": "singularity",
+   "visual": {
+    "image": "singularity_curve",
+    "text": {
+     "ja": "その先は予測できない"
+    }
+   },
+   "gist": "その先は、人間には予測できない世界になる、と考えられている",
+   "terms": [
+    "予測できない"
+   ],
+   "emotion": "surprise",
+   "tags": [
+    {
+     "tag": "surprise"
+    },
+    {
+     "tag": "emphasize",
+     "term": "予測できない"
+    }
+   ],
+   "seconds": 6.0,
+   "reference": {
+    "ja": "その先は、人間には予測できない世界になる、と考えられています。"
+   }
+  },
+  {
+   "id": "L09",
+   "scene": "singularity",
+   "visual": {
+    "text": {
+     "ja": "いつ？ 本当に？ → 意見はさまざま"
+    }
+   },
+   "gist": "2045 年ごろと予想する人もいるが、いつ来るのか、本当に来るのかは、専門家でも意見が分かれている",
+   "terms": [
+    "2045 年"
+   ],
+   "emotion": "trouble",
+   "tags": [
+    {
+     "tag": "question"
+    }
+   ],
+   "seconds": 10.0,
+   "reference": {
+    "ja": "2045 年ごろと予想する人もいますが、いつ来るのか、本当に来るのかは、専門家でも意見が分かれています。"
+   }
+  },
+  {
+   "id": "L10",
+   "scene": "summary",
+   "visual": {
+    "image": "summary",
+    "text": {
+     "ja": "AGI → RSI → シンギュラリティ"
+    }
+   },
+   "gist": "まとめ：AGI ができて、RSI で自分を改良し続けると、シンギュラリティに至るかもしれない",
+   "terms": [
+    "AGI",
+    "RSI",
+    "シンギュラリティ"
+   ],
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "conclude"
+    },
+    {
+     "tag": "point_at",
+     "region": "card"
+    }
+   ],
+   "seconds": 10.0,
+   "reference": {
+    "ja": "まとめると、AGI ができて、RSI で自分を改良し続けると、シンギュラリティが来るかもしれない、ということです。"
+   }
+  },
+  {
+   "id": "L11",
+   "scene": "summary",
+   "visual": {
+    "text": {
+     "ja": "AGI → RSI → シンギュラリティ"
+    }
+   },
+   "gist": "見てくれたことにお礼を言って締める",
+   "emotion": "joy",
+   "tags": [
+    {
+     "tag": "greet"
+    }
+   ],
+   "seconds": 2.5,
+   "reference": {
+    "ja": "見てくれて、ありがとうございました。"
+   }
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "hands_demo_chest", "label": "手の形の一覧（両手・胸の前）", "duration": 13.2, "loop": true,
+  "keys": [
+    {"t": 0, "bones": {"leftUpperArm": [0, 0, -70], "leftLowerArm": [0, 0, -5], "leftHand": [0, 0, 0], "rightUpperArm": [0, 0, 70], "rightLowerArm": [0, 0, 5], "rightHand": [0, 0, 0], "spine": [0, 0, 0], "head": [0, 0, 0]}, "face": {"mouth": "sil"}, "hands": {"L": "open", "R": "open"}},
+    {"t": 1.0, "bones": {"rightUpperArm": [0, 45, 48], "rightLowerArm": [0, 0, -92], "rightHand": [0, 0, -8], "leftUpperArm": [0, -45, -48], "leftLowerArm": [0, 0, 92], "leftHand": [0, 0, 8], "head": [0, 0, 0]}},
+    {"t": 1.0, "hands": {"L": "open", "R": "open"}},
+    {"t": 2.6, "hands": {"L": "palm", "R": "palm"}},
+    {"t": 4.2, "hands": {"L": "palm_up", "R": "palm_up"}},
+    {"t": 5.800000000000001, "hands": {"L": "point", "R": "point"}},
+    {"t": 7.4, "hands": {"L": "fist", "R": "fist"}},
+    {"t": 9.0, "hands": {"L": "peace", "R": "peace"}},
+    {"t": 10.6, "hands": {"L": "thumbs_up", "R": "thumbs_up"}},
+    {"t": 11.8, "bones": {"rightUpperArm": [0, 45, 48], "rightLowerArm": [0, 0, -92], "rightHand": [0, 0, -8], "leftUpperArm": [0, -45, -48], "leftLowerArm": [0, 0, 92], "leftHand": [0, 0, 8], "head": [0, 0, 0]}},
+    {"t": 12.2, "bones": {"leftUpperArm": [0, 0, -70], "leftLowerArm": [0, 0, -5], "leftHand": [0, 0, 0], "rightUpperArm": [0, 0, 70], "rightLowerArm": [0, 0, 5], "rightHand": [0, 0, 0], "spine": [0, 0, 0], "head": [0, 0, 0]}, "hands": {"L": "open", "R": "open"}}
+  ]
+}

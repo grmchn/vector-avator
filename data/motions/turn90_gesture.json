@@ -1,0 +1,725 @@
+{
+ "name": "turn90_gesture",
+ "label": "真横を向いて説明・指差し（体 80°＋首 10°）",
+ "duration": 11.4,
+ "loop": true,
+ "keys": [
+  {
+   "t": 0,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "hands": {
+    "L": "open",
+    "R": "open"
+   },
+   "face": {
+    "expression": "neutral",
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 0.4,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 1.8,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     80,
+     0
+    ],
+    "head": [
+     0,
+     10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 2.6,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     35,
+     48
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -100
+    ],
+    "hips": [
+     0,
+     80,
+     0
+    ],
+    "head": [
+     0,
+     10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "hands": {
+    "R": "palm"
+   },
+   "face": {
+    "expression": "smile",
+    "mouth": "a"
+   }
+  },
+  {
+   "t": 3.2,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     35,
+     48
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -82
+    ],
+    "hips": [
+     0,
+     80,
+     0
+    ],
+    "head": [
+     0,
+     10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "face": {
+    "mouth": "i"
+   }
+  },
+  {
+   "t": 3.8,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     35,
+     48
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -100
+    ],
+    "hips": [
+     0,
+     80,
+     0
+    ],
+    "head": [
+     0,
+     10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "face": {
+    "mouth": "o"
+   }
+  },
+  {
+   "t": 4.4,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     35,
+     48
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     -82
+    ],
+    "hips": [
+     0,
+     80,
+     0
+    ],
+    "head": [
+     0,
+     10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "face": {
+    "mouth": "sil"
+   }
+  },
+  {
+   "t": 5.0,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     80,
+     0
+    ],
+    "head": [
+     0,
+     10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "hands": {
+    "R": "open"
+   },
+   "face": {
+    "expression": "neutral"
+   }
+  },
+  {
+   "t": 6.6,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -80,
+     0
+    ],
+    "head": [
+     0,
+     -10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 7.4,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -15,
+     -28
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     0
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -80,
+     0
+    ],
+    "head": [
+     0,
+     -10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "hands": {
+    "L": "point"
+   },
+   "face": {
+    "expression": "smile"
+   }
+  },
+  {
+   "t": 7.7,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -15,
+     -22
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     0
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -80,
+     0
+    ],
+    "head": [
+     0,
+     -10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 9.0,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     -15,
+     -28
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     0
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -80,
+     0
+    ],
+    "head": [
+     0,
+     -10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 9.6,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -80,
+     0
+    ],
+    "head": [
+     0,
+     -10,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "hands": {
+    "L": "open"
+   },
+   "face": {
+    "expression": "neutral"
+   }
+  },
+  {
+   "t": 11.0,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 11.4,
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

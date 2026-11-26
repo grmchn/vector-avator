@@ -70,4 +70,4 @@
 
 
 
-<!-- source: the rebuild-character-layers skill (owner's), adapted for vector-avator -->
+<!-- source: the rebuild-character-layers skill, adapted for vector-avator -->

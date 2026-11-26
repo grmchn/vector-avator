@@ -3,6 +3,7 @@
 // than the front part is drawn along the front part's edge, on its inside.
 import pc, { type Ring } from "./pc";
 import { apply, flatten, mulAff, type Affine, type LoadedPart, type Pt } from "./vdata";
+import type { ShapeWobble } from "./wobble";
 
 export interface OutlineSettings {
   enabled: boolean;
@@ -11,13 +12,22 @@ export interface OutlineSettings {
   darken: number;     // 0..1 lightness reduction
   threshold: number;  // CIE76 delta E: colours closer than this count as "similar"
   outerColor: string; // "" = derived from each part
-  /** hand-drawn ("brush") lines; null = the plain constant-width stroke (id044) */
+  /** hand-drawn ("brush") lines; null = the plain constant-width stroke */
   hand?: HandLine | null;
   /** current time in seconds (set by the renderer each frame; used by the boil) */
   clock?: number;
+  /** wobble of the flat-colour shapes themselves; null = the shapes are drawn as they are */
+  shape?: ShapeWobble | null;
+  /** where the line between overlapping parts lies: "inside" the front part (default),
+   *  or "outer": with the outer outline on, the line continues it, in the outer colour and
+   *  width, outside the front part (on the part behind), so the two lines join into one */
+  inner?: "inside" | "outer";
+  /** generated arms: no line within this many shoulder widths of the shoulder point (
+   *  0 = off), so the line starts below the armpit instead of turning round the arm's root */
+  rootGap?: number;
 }
 
-/** Hand-drawn line settings (id053). The part data is not changed: only the way the
+/** Hand-drawn line settings. The part data is not changed: only the way the
  *  generated outline is stroked (and, optionally, a tiny wobble of the face features). */
 export interface HandLine {
   wobble: number;    // drawing px: offset of the line along the normal (slow noise)
@@ -46,7 +56,7 @@ export const HAND_PRESETS: Record<HandPreset, HandLine> = {
   // optional set for a stronger hand-made look: strong + 8fps boil + 2px big wobble + crayon
   sketch: { ...STRONG, boil: 8, boilWob: 2, texture: "crayon" },
 };
-/** Preset used when the URL has no vHand (owner decision, 2026-11-18). */
+/** Preset used when the URL has no vHand. */
 export const DEFAULT_HAND: HandPreset = "strong";
 
 /** URL parameters: vHand=0|1|2|3|4 (off, weak, mid, strong, sketch) or off|weak|mid|strong|sketch
@@ -350,12 +360,26 @@ export interface DrawItem {
   group?: string;               // pieces of one arm do not outline each other
   clipSelf?: boolean;           // paths[1..] are clipped to paths[0] (generated arms)
   outline?: boolean;            // false: this part never draws an automatic outline
+  /** draws its own outer outline right before its fill (vector.json "halo"), over the parts
+   *  behind it, instead of the inner lines against them (a head with a thick line all round) */
+  halo?: boolean;
+  /** false: not in the outer outline (vector.json "outer") */
+  outer?: boolean;
+  /** the automatic lines of this item are drawn only on the side of this half-plane that `n`
+   *  points to (drawing px): an arm's lines stop at the shoulder point, none round its root */
+  lineFrom?: { p: Pt; n: Pt; r: number }; // only within r of p (the root, not a forearm folded back)
+  /** parts in front of this item draw no line over it within this circle (drawing px) */
+  noLineZone?: { c: Pt; r: number };
+  /** this item draws no line of its own within this circle (drawing px): an arm's root */
+  lineGap?: { c: Pt; r: number };
   /** colour regions inside the silhouette (generated arms: one per colour band); default = whole part */
   regions?: { path: Path2D; color: string; shade?: string }[];
   shadePath?: Path2D;
   seamless?: string[];          // no outline between this item and these ids / groups
   /** silhouette as polylines (same coordinates as sil); needed for hand-drawn lines */
   rings?: Pt[][];
+  /** opacity per path (shapes fading out in an in-between) */
+  alphas?: number[];
 }
 
 /** True when the two items must join without a line (vector.json "seamlessWith"). */
@@ -367,7 +391,9 @@ export function seamless(a: DrawItem, b: DrawItem): boolean {
 /** Union of all shapes of a part (rest coordinates). */
 export function silhouetteRings(p: LoadedPart): Pt[][] {
   const rd = (v: number) => Math.round(v * 100) / 100;
-  const polys = p.cmds.map((c) => flatten(c, 6)).filter((r) => r.length)
+  // an in-between outline (one simple ring, morph.ts) needs no union
+  if (p.shapes.length === 1 && p.shapes[0].flat?.length === 1) return [p.shapes[0].flat[0].map(([x, y]) => [Math.round(x * 100) / 100, Math.round(y * 100) / 100] as Pt)];
+  const polys = (p.shapeRings ?? p.cmds.map((c) => flatten(c, 6))).filter((r) => r.length)
     .map((rings) => rings.map((r) => { const q = r.map(([x, y]) => [rd(x), rd(y)] as Pt); return [...q, q[0]] as Ring; }));
   if (!polys.length) return [];
   try {
@@ -420,6 +446,8 @@ export function darken(hex: string, amount: number): string {
   return "#" + out.map((v) => v.toString(16).padStart(2, "0")).join("");
 }
 
+/** Width of the outer outline (outside the silhouette) per unit of OutlineSettings.width. */
+export const OUTER_K = 1.3;
 const overlap = (a: DrawItem["box"], b: DrawItem["box"]) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
 const scaleOf = (m: Affine) => Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2])) || 1;
 
@@ -433,7 +461,10 @@ export function drawOutlines(g: CanvasRenderingContext2D, view: Affine, P: DrawI
   const mP = mulAff(view, P.aff);
   // pieces of the same arm (upper arm, forearm, a seamless hand) form one shape: no outline
   // inside the pieces already drawn (e.g. the forearm's round end lying on the hand)
-  const same = P.group ? drawn.filter((Q) => Q.group === P.group && Q.id !== P.id) : [];
+  // ... only the pieces drawn right before P: a piece behind the body (an upper arm behind the
+  // torso, its forearm folded in front) is hidden and must not hide the forearm's lines
+  const same: DrawItem[] = [];
+  if (P.group) for (let i = drawn.length - 1; i >= 0 && drawn[i].group === P.group; i--) if (drawn[i].id !== P.id) same.push(drawn[i]);
   // one "outside of Q" clip per piece (applied in turn = outside of their union)
   const outside: Path2D[] = [];
   if (same.length && typeof DOMMatrix !== "undefined") {
@@ -447,6 +478,8 @@ export function drawOutlines(g: CanvasRenderingContext2D, view: Affine, P: DrawI
   }
   const h = o.hand && P.rings ? o.hand : null;
   const kP = scaleOf(P.aff);
+  // the line continues the outer outline (plain lines only)
+  const asOuter = !h && o.outer && o.inner === "outer" && !!P.rings;
   // hand-drawn line: one brush per silhouette ring, built once for all overlapping pairs
   const brushes = h ? P.rings!.map((r) => brushRing(r, kP, o.width, h, boilSeed(h, o.clock))) : [];
   for (const pr of regs(P)) {
@@ -454,32 +487,117 @@ export function drawOutlines(g: CanvasRenderingContext2D, view: Affine, P: DrawI
       for (const qr of regs(Q)) {
         if (deltaE(pr.color, qr.color) > o.threshold) continue;
         g.save();
-        if (outside.length) { g.setTransform(1, 0, 0, 1, 0, 0); for (const o2 of outside) g.clip(o2, "evenodd"); }
+        // plain lines end with round caps at the pieces of the same arm (judged per point below), so
+        // the line turns the corner where a hand comes out from under the forearm without a pinch
+        if ((h || asOuter) && outside.length) { g.setTransform(1, 0, 0, 1, 0, 0); for (const o2 of outside) g.clip(o2, "evenodd"); }
         const mQ = mulAff(view, Q.aff);
         g.setTransform(mQ[0], mQ[1], mQ[2], mQ[3], mQ[4], mQ[5]);
         // visible ends of the line (for the taper): edge points of P lying inside Q's region
         // (without a taper, only the part of the ring near Q's box is filled; the clip does the rest)
+        // the outer style tests a point half way across the line, outside P (a negative inset)
+        const inset = asOuter ? -(0.65 * OUTER_K * o.width) / kP : (0.8 * o.width) / kP;
+        const halo = Q.halo && o.outer ? 1.3 * o.width : 0; // drawing px
+        if (halo) { g.lineWidth = (2 * halo) / scaleOf(Q.aff); g.lineJoin = "round"; }
         const facs = !h ? null : h.taper > 0
-          ? brushes.map((br) => taperFactors(visibleMask(g, view, br.c, P, Q, qr.path, outside), br.step, h.taper))
-          : brushes.map((br) => boxMask(br.c, P.aff, Q.box, 3 * o.width).map((v) => (v ? 1 : 0)));
-        g.clip(Q.sil, Q.evenodd ? "evenodd" : "nonzero");
+          ? brushes.map((br) => taperFactors(visibleMask(g, view, br.c, P, Q, qr.path, outside, inset, halo), br.step, h.taper))
+          : brushes.map((br) => visibleMask(g, view, br.c, P, Q, qr.path, outside, inset, halo).map((v) => (v ? 1 : 0)));
+        // plain line: only the runs where Q reaches under the line's full width (no hairlines)
+        let plain: Path2D | null = null;
+        if (!h && P.rings) {
+          plain = new Path2D();
+          for (const r0 of P.rings) {
+            const r = resampleRing(r0, Math.max(1.5, 0.5 * o.width) / kP);
+            if (r.length < 3) continue;
+            plain.addPath(runsPath(r, visibleMask(g, view, r, P, Q, qr.path, outside, inset, halo)));
+          }
+        }
+        if (!halo) g.clip(Q.sil, Q.evenodd ? "evenodd" : "nonzero");
         if (qr.path) g.clip(qr.path);
         g.setTransform(mP[0], mP[1], mP[2], mP[3], mP[4], mP[5]);
+        if (asOuter) {
+          // outside P only: the line lies on Q, in line with the outer outline round the figure
+          const out = new Path2D();
+          out.rect(-1e6, -1e6, 2e6, 2e6);
+          out.addPath(P.sil);
+          g.clip(out, "evenodd");
+          g.strokeStyle = o.outerColor || "#4a5266";
+          g.lineJoin = "round";
+          g.lineCap = "round";
+          g.lineWidth = (2 * OUTER_K * o.width) / kP;
+          g.stroke(plain ?? P.sil);
+          g.restore();
+          continue;
+        }
         g.clip(P.sil, P.evenodd ? "evenodd" : "nonzero");
         if (pr.path) g.clip(pr.path);
         g.strokeStyle = darken(pr.color, o.darken);
         g.lineJoin = "round";
+        g.lineCap = "round";
         if (h) {
           g.fillStyle = lineFill(g, darken(pr.color, o.darken), h, o.clock, mP, view);
           brushes.forEach((br, i) => { if (!facs || facs[i].some((f) => f > 0)) fillBrush(g, br, facs ? facs[i] : null); });
         } else {
           g.lineWidth = (2 * o.width) / kP;
-          g.stroke(P.sil);
+          g.stroke(plain ?? P.sil);
         }
         g.restore();
       }
     }
   }
+}
+
+/** Unit normals pointing into a closed ring (either orientation). */
+export function inwardNormals(ring: Pt[]): Pt[] {
+  const n = ring.length;
+  let area = 0;
+  for (let i = 0; i < n; i++) { const a = ring[i], b = ring[(i + 1) % n]; area += a[0] * b[1] - b[0] * a[1]; }
+  const s = area >= 0 ? 1 : -1;
+  return ring.map((_, i) => {
+    const a = ring[(i - 1 + n) % n], b = ring[(i + 1) % n];
+    const tx = b[0] - a[0], ty = b[1] - a[1];
+    const l = Math.hypot(tx, ty) || 1;
+    return [(-ty / l) * s, (tx / l) * s] as Pt;
+  });
+}
+
+/** Open polylines along the runs of visible points of a closed ring (whole ring if all visible). */
+export function runsPath(ring: Pt[], vis: boolean[]): Path2D {
+  const path = new Path2D();
+  const n = ring.length;
+  if (vis.every(Boolean)) {
+    ring.forEach(([x, y], i) => (i ? path.lineTo(x, y) : path.moveTo(x, y)));
+    path.closePath();
+    return path;
+  }
+  const start = vis.findIndex((v) => !v);
+  if (start < 0) return path;
+  let run: Pt[] = [];
+  const flush = () => { if (run.length > 1) run.forEach(([x, y], i) => (i ? path.lineTo(x, y) : path.moveTo(x, y))); run = []; };
+  for (let k = 1; k <= n; k++) {
+    const i = (start + k) % n;
+    if (vis[i]) run.push(ring[i]); else flush();
+  }
+  flush();
+  return path;
+}
+
+/** A part's own outer outline (vector.json "halo"), drawn right before its fill. */
+export function haloOutline(g: CanvasRenderingContext2D, view: Affine, it: DrawItem, o: OutlineSettings) {
+  const color = o.outerColor || darken(it.color, o.darken);
+  const m = mulAff(view, it.aff);
+  const k = scaleOf(it.aff);
+  g.save();
+  g.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
+  if (o.hand && it.rings) {
+    g.strokeStyle = lineFill(g, color, o.hand, o.clock, m, view);
+    for (const r of it.rings) strokeBrush(g, brushRing(r, k, o.width * 1.3, o.hand, boilSeed(o.hand, o.clock) + 3));
+  } else {
+    g.strokeStyle = color;
+    g.lineJoin = "round";
+    g.lineWidth = (2.6 * o.width) / k;
+    g.stroke(it.sil);
+  }
+  g.restore();
 }
 
 /** Points (P local) whose drawing position lies in the box, grown by `pad` drawing px. */
@@ -492,20 +610,38 @@ export function boxMask(pts: Pt[], aff: Affine, box: DrawItem["box"], pad: numbe
 
 /** Which centre-line points of P's brush lie inside Q (and its colour region) and outside
  *  the pieces of P's own arm. The current transform must be Q's (isPointInPath uses it). */
-function visibleMask(g: CanvasRenderingContext2D, view: Affine, pts: Pt[], P: DrawItem, Q: DrawItem, qPath: Path2D | null, outside: Path2D[]): boolean[] {
+function visibleMask(g: CanvasRenderingContext2D, view: Affine, pts: Pt[], P: DrawItem, Q: DrawItem, qPath: Path2D | null, outside: Path2D[], inset = 0, halo = 0): boolean[] {
   const mP = mulAff(view, P.aff);
   const [x0, y0, x1, y1] = Q.box;
   const fr = Q.evenodd ? "evenodd" : "nonzero";
   const mQ = g.getTransform();
-  const test = (p: Pt) => {
+  // with an inset, the point tested lies that far inside P (local units): the line shows only
+  // where Q reaches under its full width, so a sliver of Q along P's edge (an arm root lying
+  // just inside the torso's edge) gives no hairline
+  const nrm = inset > 0 ? inwardNormals(pts) : null;
+  const lf = P.lineFrom, z = Q.noLineZone, gp = P.lineGap;
+  const inHalo = (a: Pt, b: Pt) => g.isPointInStroke(Q.sil, a[0], a[1]) || g.isPointInStroke(Q.sil, b[0], b[1]) || g.isPointInPath(Q.sil, b[0], b[1], fr);
+  const test = (i: number) => {
+    if (lf || z || gp) {
+      const e = apply(P.aff, pts[i]);
+      if (lf && (e[0] - lf.p[0]) * lf.n[0] + (e[1] - lf.p[1]) * lf.n[1] < 0 && Math.hypot(e[0] - lf.p[0], e[1] - lf.p[1]) < lf.r) return false;
+      if (z && Math.hypot(e[0] - z.c[0], e[1] - z.c[1]) < z.r) return false;
+      if (gp && Math.hypot(e[0] - gp.c[0], e[1] - gp.c[1]) < gp.r) return false;
+    }
+    const p: Pt = nrm ? [pts[i][0] + nrm[i][0] * inset, pts[i][1] + nrm[i][1] * inset] : pts[i];
     const d = apply(P.aff, p);
-    if (d[0] < x0 - 2 || d[0] > x1 + 2 || d[1] < y0 - 2 || d[1] > y1 + 2) return false;
+    const m = 2 + halo;
+    if (d[0] < x0 - m || d[0] > x1 + m || d[1] < y0 - m || d[1] > y1 + m) return false;
     const c = apply(mP, p);
-    if (!g.isPointInPath(Q.sil, c[0], c[1], fr)) return false;
+    // a part with a halo: its outer outline counts as the part (a hand in front of the head's
+    // lower edge keeps its line over the head's black line)
+    if (!g.isPointInPath(Q.sil, c[0], c[1], fr) && !(halo > 0 && inHalo(c, apply(mP, pts[i])))) return false;
     if (qPath && !g.isPointInPath(qPath, c[0], c[1])) return false;
     if (outside.length) {
+      // the pieces of the same arm: judged at the edge itself
+      const ce = apply(mP, pts[i]);
       g.setTransform(1, 0, 0, 1, 0, 0);
-      const ok = outside.every((o2) => g.isPointInPath(o2, c[0], c[1], "evenodd"));
+      const ok = outside.every((o2) => g.isPointInPath(o2, ce[0], ce[1], "evenodd"));
       g.setTransform(mQ);
       if (!ok) return false;
     }
@@ -514,11 +650,11 @@ function visibleMask(g: CanvasRenderingContext2D, view: Affine, pts: Pt[], P: Dr
   // test every 8th point; the points between are tested only where the result changes
   const n = pts.length, S = 8;
   const out: (boolean | undefined)[] = new Array(n);
-  for (let i = 0; i < n; i += S) out[i] = test(pts[i]);
+  for (let i = 0; i < n; i += S) out[i] = test(i);
   for (let i = 0; i < n; i += S) {
     const j = i + S < n ? i + S : 0;
     const same = out[i] === out[j];
-    for (let k = i + 1; k < Math.min(i + S, n); k++) out[k] = same ? out[i] : test(pts[k]);
+    for (let k = i + 1; k < Math.min(i + S, n); k++) out[k] = same ? out[i] : test(k);
   }
   return out as boolean[];
 }
@@ -532,7 +668,7 @@ export function outerOutline(g: CanvasRenderingContext2D, W: number, H: number, 
     g.save();
     g.strokeStyle = g.fillStyle = o.outerColor || "#4a5266";
     for (const it of items) {
-      if (it.clip) continue;
+      if (it.clip || it.outer === false) continue;
       const m = mulAff(view, it.aff);
       g.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
       g.strokeStyle = lineFill(g, o.outerColor || "#4a5266", h, o.clock, m, view);
@@ -545,15 +681,74 @@ export function outerOutline(g: CanvasRenderingContext2D, W: number, H: number, 
   }
   const off = document.createElement("canvas");
   off.width = W; off.height = H;
-  const c = off.getContext("2d")!;
+  // same backing as the main canvas: drawing a GPU canvas 16 times onto a software one (vSoft)
+  // reads it back every time (about 7 s a frame at DSF 2 in headless capture)
+  const soft = !!(g.getContextAttributes?.() as { willReadFrequently?: boolean } | undefined)?.willReadFrequently;
+  const c = off.getContext("2d", { willReadFrequently: soft })!;
   c.fillStyle = o.outerColor || "#4a5266";
   for (const it of items) {
-    if (it.clip) continue;
+    if (it.clip || it.outer === false) continue;
     const m = mulAff(view, it.aff);
     c.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
     c.fill(it.sil, it.evenodd ? "evenodd" : "nonzero");
   }
-  const r = Math.max(1, o.width * 1.3 * view[0]);
+  const r = Math.max(1, o.width * OUTER_K * view[0]);
+  g.save();
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  for (let k = 0; k < 16; k++) {
+    const a = (k / 16) * Math.PI * 2;
+    g.drawImage(off, Math.cos(a) * r, Math.sin(a) * r);
+  }
+  g.restore();
+}
+
+/** Rim on pale areas: a light outline only where the figure's own colour is pale, so a
+ *  white character keeps its edge on a pale background without a full outer outline. */
+export interface RimSettings {
+  color: string;   // "#rrggbb"
+  minL: number;    // CIE L* from which a fill counts as pale (0..100)
+  width: number;   // drawing px
+}
+
+/** True when the fill is pale enough to get the rim (plain colours only). */
+export function isPale(fill: string | null | undefined, minL: number): boolean {
+  if (!fill || !/^#[0-9a-fA-F]{6}$/.test(fill)) return false;
+  const lab = labCache.get(fill) ?? toLab(hexRgb(fill));
+  labCache.set(fill, lab);
+  return lab[0] >= minL;
+}
+
+/** The pale shapes of every item, dilated by rim.width and drawn behind everything in rim.color.
+ *  Drawn first, so the figure covers it except outside its silhouette (a cut at the frame edge
+ *  gets no line: the camera simply shows part of the figure). */
+export function rimOutline(g: CanvasRenderingContext2D, W: number, H: number, view: Affine, items: DrawItem[], rim: RimSettings) {
+  const off = document.createElement("canvas");
+  off.width = W; off.height = H;
+  const soft = !!(g.getContextAttributes?.() as { willReadFrequently?: boolean } | undefined)?.willReadFrequently;
+  const c = off.getContext("2d", { willReadFrequently: soft })!;
+  c.fillStyle = rim.color;
+  let any = false;
+  for (const it of items) {
+    if (it.clip || it.outer === false || it.noOutline) continue;
+    const m = mulAff(view, it.aff);
+    c.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
+    if (it.regions) {
+      const base = isPale(it.fills[0], rim.minL);
+      if (base) { c.fill(it.sil); any = true; continue; }
+      for (const r of it.regions) {
+        if (!isPale(r.color, rim.minL)) continue;
+        c.save(); c.clip(it.sil); c.fill(r.path); c.restore(); any = true;
+      }
+      continue;
+    }
+    it.paths.forEach((p, i) => {
+      if (!isPale(it.fills[i], rim.minL) || (it.alphas && (it.alphas[i] ?? 1) < 0.5)) return;
+      c.fill(p, it.evenodd ? "evenodd" : "nonzero");
+      any = true;
+    });
+  }
+  if (!any) return;
+  const r = Math.max(1, rim.width * view[0]);
   g.save();
   g.setTransform(1, 0, 0, 1, 0, 0);
   for (let k = 0; k < 16; k++) {

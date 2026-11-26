@@ -2,5 +2,7 @@
 numpy>=1.26
 Pillow>=10
 svgpathtools>=1.6,<2
+# explainer videos: checking the three-layer data
+jsonschema>=4
 # tests
 pytest>=8

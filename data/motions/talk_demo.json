@@ -20,7 +20,7 @@
     {"t": 6.5, "face": {"yaw": 18, "pitch": 4, "expression": "surprised"}},
     {"t": 7.8, "face": {"yaw": 18, "pitch": 4, "expression": "surprised"}},
     {"t": 8.2, "bones": {"leftUpperArm": [0, 0, -70], "rightUpperArm": [0, 0, 70], "leftLowerArm": [0, 0, -5], "rightLowerArm": [0, 0, 5], "head": [0, 0, 0]}, "face": {"yaw": 0, "pitch": 0, "expression": "neutral"}},
-    {"t": 8.4, "hands": {"L": "palm", "R": "palm"}},
+    {"t": 8.4, "hands": {"L": "palm_up", "R": "palm_up"}},
     {"t": 8.7, "bones": {"leftUpperArm": [0, -15, -55], "rightUpperArm": [0, 15, 55], "leftLowerArm": [0, -20, 15], "rightLowerArm": [0, 20, -15]}, "face": {"yaw": -18}},
     {"t": 10.0, "bones": {"leftUpperArm": [0, -15, -55], "rightUpperArm": [0, 15, 55], "leftLowerArm": [0, -20, 15], "rightLowerArm": [0, 20, -15], "head": [0, 0, 0]}, "face": {"yaw": -18, "expression": "smile"}},
     {"t": 10.4, "bones": {"head": [12, 0, 0]}},

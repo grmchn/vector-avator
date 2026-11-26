@@ -4,12 +4,28 @@
 
 export type Pt = [number, number];
 
-export interface VShape { name: string; d: string; fill: string | null }
+export interface VShape {
+  name: string; d: string; fill: string | null;
+  /** already parsed outline (in-betweens): used instead of parsing d, which is then
+   *  left empty; `flat` = its flattened rings (one per subpath) */
+  cmds?: Cmd[]; flat?: Pt[][];
+  /** opacity of a shape that fades out as it collapses in an in-between; default 1 */
+  alpha?: number;
+}
 export interface VPart {
   id: string; label: string; parent: string | null; pivot: Pt; visible: boolean; coverage: string;
   bone: string; layer: string; group?: string; variants?: string[]; clipTo?: string; color?: string;
   /** false: no automatic outline on this part; seamlessWith: no line against these parts/groups */
   outline?: boolean; seamlessWith?: string[];
+  /** true: the part draws its own outer outline over the parts behind it (needs vOuter), instead
+   *  of inner lines against them (a head whose thick line runs all round, also over the body) */
+  halo?: boolean;
+  /** false: the part is left out of the thick outer outline (vOuter): props over the head */
+  outer?: boolean;
+  /** in-betweens of turned drawings: "shape" (default) blends the outlines point by
+   *  point; "rigid" keeps the nearer drawing's shape and only moves and scales it (a round
+   *  tail, a ball, a badge: accessories that look the same from every angle) */
+  morph?: "shape" | "rigid";
   shapes: VShape[];
 }
 export interface ArmDef {
@@ -19,6 +35,15 @@ export interface ArmDef {
   attach?: string;
   /** true: the hand joins the arm without a wrist line */
   seamlessHand?: boolean;
+  /** radius (drawing px) around the shoulder point where the parts in front of the arm draw no
+   *  line over it: the line between a hanging arm and the torso starts at the armpit, not at the
+   *  shoulder. Default 0 */
+  rootGap?: number;
+  /** How the forearm ends at the wrist. "round" (default): a round cap. "flat": a straight cut
+   *  (band boundaries straight too). "arc": cut along the same arc as the band boundaries, like
+   *  a sleeve opening seen in depth. With seamlessHand, "flat"/"arc" keep the cap from covering
+   *  the hand drawn under it (a sleeve cuff, a twin-tail character) */
+  wristCap?: "round" | "flat" | "arc";
 }
 export interface ChainDef {
   id: string; bone: string; parts: string[]; root: Pt; tip: Pt; segments: number;
@@ -81,6 +106,11 @@ export function parsePath(d: string): Cmd[] {
 export type MapFn = (p: Pt) => Pt;
 
 /** Emit commands into a Path2D (or a CanvasRenderingContext2D path) with an optional point map. */
+/** Commands with every point mapped. */
+export function mapCmds(cmds: Cmd[], f: MapFn): Cmd[] {
+  return cmds.map((c): Cmd => (c.k === "Z" ? c : c.k === "C" ? { k: "C", p: [f(c.p[0]), f(c.p[1]), f(c.p[2])] } : { k: c.k, p: f(c.p) }));
+}
+
 export function emitPath(cmds: Cmd[], f?: MapFn, path: Path2D = new Path2D()): Path2D {
   const m = f ?? ((p: Pt) => p);
   for (const c of cmds) {
@@ -127,6 +157,7 @@ export interface LoadedPart extends VPart {
   fills: (string | null)[];
   baseColor: string;
   rings: Pt[][];            // flattened outline of all shapes (rest pose, canvas coords)
+  shapeRings?: Pt[][][];    // the same per shape
   box: [number, number, number, number];
 }
 
@@ -140,9 +171,10 @@ export async function loadVector(url: string): Promise<LoadedVector> {
 
 export function prepareVector(doc: VectorDoc): LoadedVector {
   const parts: LoadedPart[] = doc.parts.map((p) => {
-    const cmds = p.shapes.map((s) => parsePath(s.d));
-    const rings = cmds.flatMap((c) => flatten(c, 6));
-    return { ...p, cmds, fills: p.shapes.map((s) => s.fill), baseColor: p.color ?? p.shapes.find((s) => s.fill)?.fill ?? "#ffffff", rings, box: bbox(rings) };
+    const cmds = p.shapes.map((s) => s.cmds ?? parsePath(s.d));
+    const shapeRings = p.shapes.map((s, i) => s.flat ?? flatten(cmds[i], 6));
+    const rings = shapeRings.flat();
+    return { ...p, cmds, fills: p.shapes.map((s) => s.fill), baseColor: p.color ?? p.shapes.find((s) => s.fill)?.fill ?? "#ffffff", rings, shapeRings, box: bbox(rings) };
   });
   return { doc, parts, byId: Object.fromEntries(parts.map((p) => [p.id, p])) };
 }

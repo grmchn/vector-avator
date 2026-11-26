@@ -62,3 +62,41 @@ export function lerp(a: number, b: number, t: number): number {
 export function smoothstep(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
+
+export function quatConj(q: Quat): Quat {
+  return [-q[0], -q[1], -q[2], q[3]];
+}
+
+/** Rotate a vector by a unit quaternion. */
+export function quatRotate(q: Quat, v: Vec3): Vec3 {
+  const [x, y, z, w] = q;
+  const ix = w * v[0] + y * v[2] - z * v[1];
+  const iy = w * v[1] + z * v[0] - x * v[2];
+  const iz = w * v[2] + x * v[1] - y * v[0];
+  const iw = -x * v[0] - y * v[1] - z * v[2];
+  return [ix * w + iw * -x + iy * -z - iz * -y, iy * w + iw * -y + iz * -x - ix * -z, iz * w + iw * -z + ix * -y - iy * -x];
+}
+
+/** Unit quaternion of the rotation whose matrix has the given (orthonormal) columns,
+ *  i.e. it maps +X to ex, +Y to ey and +Z to ez. */
+export function quatFromBasis(ex: Vec3, ey: Vec3, ez: Vec3): Quat {
+  const m00 = ex[0], m10 = ex[1], m20 = ex[2];
+  const m01 = ey[0], m11 = ey[1], m21 = ey[2];
+  const m02 = ez[0], m12 = ez[1], m22 = ez[2];
+  const tr = m00 + m11 + m22;
+  let q: Quat;
+  if (tr > 0) {
+    const s = 0.5 / Math.sqrt(tr + 1);
+    q = [(m21 - m12) * s, (m02 - m20) * s, (m10 - m01) * s, 0.25 / s];
+  } else if (m00 > m11 && m00 > m22) {
+    const s = 2 * Math.sqrt(1 + m00 - m11 - m22);
+    q = [0.25 * s, (m01 + m10) / s, (m02 + m20) / s, (m21 - m12) / s];
+  } else if (m11 > m22) {
+    const s = 2 * Math.sqrt(1 + m11 - m00 - m22);
+    q = [(m01 + m10) / s, 0.25 * s, (m12 + m21) / s, (m02 - m20) / s];
+  } else {
+    const s = 2 * Math.sqrt(1 + m22 - m00 - m11);
+    q = [(m02 + m20) / s, (m12 + m21) / s, 0.25 * s, (m10 - m01) / s];
+  }
+  return quatNormalize(q);
+}

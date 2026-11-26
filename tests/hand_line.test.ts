@@ -1,4 +1,4 @@
-// Hand-drawn outline (id053, EG4): the part coordinates stay as they are; only the generated
+// Hand-drawn outline (EG4): the part coordinates stay as they are; only the generated
 // line gets width variation, a slow wobble, tapered ends and an optional boil.
 import { describe, expect, it } from "vitest";
 import {

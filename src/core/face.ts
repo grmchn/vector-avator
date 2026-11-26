@@ -27,6 +27,12 @@ export interface FaceState {
   /** Gaze offset in degrees (x: + = look to its left, y: + = up). */
   gazeX: number;
   gazeY: number;
+  /** A prop shown over the head (the character's parts of group "prop", e.g. "question",
+   *  "idea"); "none" or absent = no prop. Discrete: held from the earlier key while it grows or
+   *  shrinks. */
+  prop?: string;
+  /** How much of the prop is shown, 0..1 (interpolated: keys 0 -> 1 make it pop in). */
+  propAmt?: number;
 }
 
 export const DEFAULT_FACE: FaceState = {
@@ -48,9 +54,26 @@ export function lerpFace(a: FaceState, b: FaceState, t: number): FaceState {
     ...a,
     yaw: n(a.yaw, b.yaw), pitch: n(a.pitch, b.pitch), roll: n(a.roll, b.roll),
     gazeX: n(a.gazeX, b.gazeX), gazeY: n(a.gazeY, b.gazeY),
+    ...(a.prop !== undefined || b.prop !== undefined ? {
+      // the prop that is growing or shrinking: the earlier key's, or the next one's when none
+      prop: a.prop && a.prop !== "none" ? a.prop : b.prop,
+      propAmt: n(a.propAmt ?? (a.prop && a.prop !== "none" ? 1 : 0), b.propAmt ?? (b.prop && b.prop !== "none" ? 1 : 0)),
+    } : {}),
   };
 }
 
 export function eyeFor(face: FaceState, side: "L" | "R"): EyeState {
   return (side === "L" ? face.eyeL : face.eyeR) ?? face.eye;
+}
+
+/** Apply an automatic blink state to the face. Every eye that is open blinks: the shared
+ *  `eye`, and an eye set open on its own (`eyeL` / `eyeR`, e.g. reopened after a wink). Before
+ *  this, a motion that reopened one eye after a wink kept that eye open through every later blink,
+ *  so only the other eye blinked. A closed or half eye (a wink in progress) is left as it is. */
+export function withBlink(face: FaceState, blink: EyeState): FaceState {
+  const f = { ...face };
+  if (f.eye === "open") f.eye = blink;
+  if (f.eyeL === "open") f.eyeL = blink;
+  if (f.eyeR === "open") f.eyeR = blink;
+  return f;
 }

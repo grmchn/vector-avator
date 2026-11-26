@@ -1,0 +1,169 @@
+{
+ "format": "explainer-script",
+ "version": 1,
+ "content": "vector_howto",
+ "char": "usagi",
+ "note": "the first version of this script, kept to check the conversion to the old build form",
+ "lines": [
+  {
+   "id": "L01",
+   "ja": "一枚の絵から、こんなふうに動くキャラが作れちゃいます。",
+   "ja_tts": "一枚の絵から、こんなふうに動くキャラが作れちゃいます。",
+   "ja_kana": "いちまいのえから、こんなふうにうごくきゃらがつくれちゃいます。",
+   "en": "From a single drawing, you can make a character that moves like this!",
+   "en_tts": "From a single drawing, you can make a character that moves like this!"
+  },
+  {
+   "id": "L02",
+   "ja": "今日はその仕組みを、ぜんぶ見せちゃいますね。",
+   "ja_tts": "今日はその仕組みを、ぜんぶ見せちゃいますね。",
+   "ja_kana": "きょうはそのしくみを、ぜんぶみせちゃいますね。",
+   "en": "Today, I'll show you the whole trick.",
+   "en_tts": "Today, I'll show you the whole trick.",
+   "override": {
+    "gesture": "nod"
+   }
+  },
+  {
+   "id": "L03",
+   "ja": "まずは画像生成で、元の絵を、フラットでシンプルな絵柄にそろえます。",
+   "ja_tts": "まずは画像生成で、元の絵を、フラットでシンプルな絵柄にそろえます。",
+   "ja_kana": "まずはがぞうせいせいで、もとのえを、ふらっとでしんぷるなえがらにそろえます。",
+   "en": "First, an image model redraws the original in one flat, simple style.",
+   "en_tts": "First, an image model redraws the original in one flat, simple style."
+  },
+  {
+   "id": "L04",
+   "ja": "次に、動画生成AIでくるっと一回転。横や後ろの形がわかります。",
+   "ja_tts": "次に、動画生成エーアイで、くるっと一回転。横や後ろの形がわかります。",
+   "ja_kana": "つぎに、どうがせいせいえーあいで、くるっといっかいてん。よこやうしろのかたちがわかります。",
+   "en": "Next, a video model spins it all the way around, so we can see the sides and the back.",
+   "en_tts": "Next, a video model spins it all the way around, so we can see the sides and the back."
+  },
+  {
+   "id": "L05",
+   "ja": "それを見ながら、四面図と表情のシートを作ります。これが設計図です。",
+   "ja_tts": "それを見ながら、四面図と表情のシートを作ります。これが設計図です。",
+   "ja_kana": "それをみながら、よんめんずとひょうじょうのしーとをつくります。これがせっけいずです。",
+   "en": "From there, we make a turnaround sheet and a face sheet. That's the blueprint.",
+   "en_tts": "From there, we make a turnaround sheet and a face sheet. That's the blueprint.",
+   "anchors": {
+    "設計図": {
+     "ja": "設計図",
+     "kana": "せっけいず"
+    }
+   }
+  },
+  {
+   "id": "L06",
+   "ja": "ここからが肝。Fable 5.2 が、シートを見て、パーツを一個ずつゼロから描き起こします。",
+   "ja_tts": "ここからが、キモ。フェイブル、ゴーテンニが、シートを見て、パーツを一個ずつ、ゼロから、描き起こします。",
+   "ja_kana": "ここからが、きも。ふぇいぶる、ごーてんにが、しーとをみて、ぱーつをいっこずつ、ぜろからかきおこします。",
+   "en": "Now the secret sauce. Fable 5.2 studies the sheets and redraws every part, one by one, from scratch.",
+   "en_tts": "Now, the secret sauce. Fable, five point two, studies the sheets, and re-draws every part, one by one, from scratch.",
+   "anchors": {
+    "ゼロから": {
+     "ja": "ゼロから",
+     "kana": "ぜろから"
+    }
+   }
+  },
+  {
+   "id": "L07",
+   "ja": "なぞるんじゃなくて、曲線を描くプログラムを自分で書くんです。塗りだけで、線はなし。",
+   "ja_tts": "なぞるんじゃなくて、曲線を描くプログラムを、自分で書くんです。塗りだけで、線はなし。",
+   "ja_kana": "なぞるんじゃなくて、きょくせんをえがくぷろぐらむを、じぶんでかくんです。ぬりだけで、せんはなし。",
+   "en": "It doesn't trace. It writes its own program that draws the curves. Fills only, no lines.",
+   "en_tts": "It doesn't trace. It writes its own program that draws the curves. Fills only, no lines.",
+   "override": {
+    "gesture": "think"
+   }
+  },
+  {
+   "id": "L08",
+   "ja": "しかも、前髪の下のおでこや、腕に隠れる胴体まで、見えない所も描き足します。",
+   "ja_tts": "しかも、前髪の下のおでこや、腕に隠れる胴体まで、見えない所も描き足します。",
+   "ja_kana": "しかも、まえがみのしたのおでこや、うでにかくれるどうたいまで、みえないところもかきたします。",
+   "en": "It even draws what you can't see, like the forehead under the bangs and the body behind the arms.",
+   "en_tts": "It even draws what you can't see, like the forehead under the bangs, and the body behind the arms.",
+   "anchors": {
+    "見えない所": {
+     "ja": "見えない所",
+     "kana": "みえないところ"
+    }
+   }
+  },
+  {
+   "id": "L09",
+   "ja": "最後は元の絵と重ねてセルフチェック。50 個くらいのパーツを、20 分ほどで仕上げます。",
+   "ja_tts": "最後は、元の絵と重ねてセルフチェック。ごじゅっこくらいのパーツを、にじっぷんほどで仕上げます。",
+   "ja_kana": "さいごは、もとのえとかさねてせるふちぇっく。ごじゅっこくらいのぱーつを、にじっぷんほどでしあげます。",
+   "en": "Then it overlays the original and checks its own work. About fifty parts in twenty minutes.",
+   "en_tts": "Then it overlays the original, and checks its own work. About fifty parts, in twenty minutes."
+  },
+  {
+   "id": "L10",
+   "ja": "動きは共通の骨格から。腕は描いた絵じゃなくて、3D の骨から毎フレーム作ってるんです。",
+   "ja_tts": "動きは、共通の骨格から。腕は、描いた絵じゃなくて、スリーディーの骨から、毎フレーム作ってるんです。",
+   "ja_kana": "うごきは、きょうつうのこっかくから。うでは、かいたえじゃなくて、すりーでぃーのほねから、まいふれーむつくってるんです。",
+   "en": "Motion comes from one shared skeleton. The arms aren't drawings: they're built from 3D bones every frame.",
+   "en_tts": "Motion comes from one shared skeleton. The arms aren't drawings. They're built from 3D bones, every frame."
+  },
+  {
+   "id": "L11",
+   "ja": "だから肘も曲がるし、手の形も変わるし、体の前にも後ろにも回せます。",
+   "ja_tts": "だから、肘も曲がるし、手の形も変わるし、体の前にも、後ろにも回せます。",
+   "ja_kana": "だから、ひじもまがるし、てのかたちもかわるし、からだのまえにも、うしろにもまわせます。",
+   "en": "So elbows bend, hands change shape, and arms can swing in front of or behind the body.",
+   "en_tts": "So elbows bend, hands change shape, and arms can swing in front of, or behind the body."
+  },
+  {
+   "id": "L12",
+   "ja": "輪郭線は、似ている色どうしが重なる所にだけ、自動で引きます。",
+   "ja_tts": "輪郭線は、似ている色どうしが重なる所にだけ、自動で引きます。",
+   "ja_kana": "りんかくせんは、にているいろどうしがかさなるところにだけ、じどうでひきます。",
+   "en": "And the outlines? They're drawn automatically, only where similar colors overlap.",
+   "en_tts": "And the outlines? They're drawn automatically, only where similar colors overlap."
+  },
+  {
+   "id": "L13",
+   "ja": "耳やしっぽは、ばねの計算でぷるん。",
+   "ja_tts": "耳やしっぽは、ばねの計算で、ぷるん。",
+   "ja_kana": "みみやしっぽは、ばねのけいさんで、ぷるん。",
+   "en": "Ears and tails bounce on springs.",
+   "en_tts": "Ears and tails bounce on springs!"
+  },
+  {
+   "id": "L14",
+   "ja": "首を振ると、パーツが奥行きごとにずれて、立体っぽく見えます。",
+   "ja_tts": "首を振ると、パーツが奥行きごとにずれて、立体っぽく見えます。",
+   "ja_kana": "くびをふると、ぱーつがおくゆきごとにずれて、りったいっぽくみえます。",
+   "en": "Turn the head, and each layer shifts by its depth, so it looks 3D.",
+   "en_tts": "Turn the head, and each layer shifts by its depth, so it looks 3D."
+  },
+  {
+   "id": "L15",
+   "ja": "呼吸とまばたきも、ずっと入れてます。生きてる感じ、大事。",
+   "ja_tts": "呼吸とまばたきも、ずっと入れてます。生きてる感じ、大事。",
+   "ja_kana": "こきゅうとまばたきも、ずっといれてます。いきてるかんじ、だいじ。",
+   "en": "Breathing and blinking never stop. That's what makes them feel alive.",
+   "en_tts": "Breathing and blinking never stop. That's what makes them feel alive."
+  },
+  {
+   "id": "L16",
+   "ja": "キャラ専用のコードはゼロ。新しい子も、人が絵を描かずに、1 時間ちょっとで動かせます。",
+   "ja_tts": "キャラ専用のコードは、ゼロ。新しい子も、人が絵を描かずに、いちじかんちょっとで動かせます。",
+   "ja_kana": "きゃらせんようのこーどは、ぜろ。あたらしいこも、ひとがえをかかずに、いちじかんちょっとでうごかせます。",
+   "en": "There's zero character-specific code. A new character can be moving in about an hour, with no hand drawing.",
+   "en_tts": "There's zero character-specific code. A new character can be moving in about an hour, with no hand drawing."
+  },
+  {
+   "id": "L17",
+   "ja": "以上、一枚絵から動くキャラができるまで、でした！",
+   "ja_tts": "以上、一枚絵から動くキャラができるまで、でした！",
+   "ja_kana": "いじょう、いちまいえからうごくきゃらができるまで、でした。",
+   "en": "And that's how one drawing becomes a moving character!",
+   "en_tts": "And that's how one drawing becomes a moving character!"
+  }
+ ]
+}

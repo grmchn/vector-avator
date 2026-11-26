@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "explainer-script.schema.json",
+  "title": "Explainer script layer (docs/explainer-format.md §6)",
+  "type": "object",
+  "required": ["format", "version", "content", "char", "lines"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "explainer-script" },
+    "version": { "const": 1 },
+    "content": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "char": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "note": { "type": "string" },
+    "lines": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/line" } }
+  },
+  "$defs": {
+    "line": {
+      "type": "object",
+      "required": ["id", "ja", "ja_tts", "ja_kana"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+        "ja": { "type": "string", "minLength": 1 },
+        "ja_tts": { "type": "string", "minLength": 1 },
+        "ja_kana": { "type": "string", "minLength": 1 },
+        "en": { "type": "string", "minLength": 1 },
+        "en_tts": { "type": "string", "minLength": 1 },
+        "anchors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object", "required": ["ja", "kana"], "additionalProperties": false,
+            "properties": { "ja": { "type": "string", "minLength": 1 }, "kana": { "type": "string", "minLength": 1 } }
+          }
+        },
+        "override": {
+          "type": "object", "minProperties": 1, "additionalProperties": false,
+          "properties": {
+            "gesture": { "enum": ["spread", "nod", "surprise", "explain", "point", "think", "turn", "idle"] },
+            "expr": { "enum": ["neutral", "smile", "surprised", "troubled"] }
+          }
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

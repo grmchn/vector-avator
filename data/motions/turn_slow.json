@@ -1,0 +1,155 @@
+{
+ "name": "turn_slow",
+ "label": "ゆっくり体ごと 0°→45°→0°（等速）",
+ "duration": 8,
+ "loop": true,
+ "keys": [
+  {
+   "t": 0,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "face": {
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   },
+   "hands": {
+    "L": "open",
+    "R": "open"
+   }
+  },
+  {
+   "t": 4,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     45,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 8,
+   "ease": "linear",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

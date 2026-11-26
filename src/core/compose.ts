@@ -25,5 +25,5 @@ export function composePose(body: Pose, face: FaceState): Pose {
     bones.leftEye = g;
     bones.rightEye = g;
   }
-  return { bones, hips: body.hips, ...(body.hands ? { hands: body.hands } : {}), ...(body.squash !== undefined ? { squash: body.squash } : {}) };
+  return { bones, hips: body.hips, ...(body.hands ? { hands: body.hands } : {}), ...(body.squash !== undefined ? { squash: body.squash } : {}), ...(body.reach ? { reach: body.reach } : {}) };
 }

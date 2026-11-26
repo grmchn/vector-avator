@@ -1,0 +1,339 @@
+{
+ "name": "turn_mix",
+ "label": "体 20°＋首 25°で左右に向く",
+ "duration": 8,
+ "loop": true,
+ "keys": [
+  {
+   "t": 0,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ],
+   "face": {
+    "expression": "neutral",
+    "mouth": "sil",
+    "eye": "open"
+   },
+   "hands": {
+    "L": "open",
+    "R": "open"
+   }
+  },
+  {
+   "t": 1.5,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     20,
+     0
+    ],
+    "head": [
+     0,
+     25,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 2.5,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     20,
+     0
+    ],
+    "head": [
+     0,
+     25,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 4,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 5.5,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -20,
+     0
+    ],
+    "head": [
+     0,
+     -25,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 6.5,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     -20,
+     0
+    ],
+    "head": [
+     0,
+     -25,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 8,
+   "ease": "smooth",
+   "bones": {
+    "leftUpperArm": [
+     0,
+     0,
+     -70
+    ],
+    "rightUpperArm": [
+     0,
+     0,
+     70
+    ],
+    "leftLowerArm": [
+     0,
+     0,
+     -5
+    ],
+    "rightLowerArm": [
+     0,
+     0,
+     5
+    ],
+    "hips": [
+     0,
+     0,
+     0
+    ],
+    "head": [
+     0,
+     0,
+     0
+    ],
+    "chest": [
+     0,
+     0,
+     0
+    ]
+   },
+   "hips": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

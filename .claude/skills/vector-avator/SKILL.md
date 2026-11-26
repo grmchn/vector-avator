@@ -1,6 +1,6 @@
 ---
 name: vector-avator
-description: Turn a single character illustration into a moving 2D vector avatar for this repository (vector-avator): restyle it and make two character sheets with Codex imagegen, have Fable 5.2 draw fill-only SVG parts with hidden regions completed, check them, and play gestures, head turns, blinking and lip-sync in the viewer. Use when the user wants to add a new character, redo a character's parts, or asks how the sample character was made. 一枚絵から、身振り手振りで動くベクターキャラを作る手順。
+description: Turn a single character illustration into a moving 2D vector avatar for this repository (vector-avator): restyle it and make two character sheets with Codex imagegen, have Fable 5.2 draw fill-only SVG parts with hidden regions completed, check them, put hand templates on, and play gestures, head turns, blinking and lip-sync in the viewer; optionally add turned body / head drawings (30/60/90 deg) and make explainer videos from content / script / semantic tags. Also use when writing or reviewing motions (motion rules: keep the hips moving, neutral eyes with moving irises, camera-first acting). 一枚絵から、身振り手振りで動くベクターキャラを作る手順と、動きのルール。
 ---
 
 # 一枚絵から、動くベクターキャラを作る
@@ -58,6 +58,10 @@ Fable 5.2 または Codex imagegen が使えない場合は、ユーザーにそ
 | 6 | 構造の検査と、確認画像の目視 | `check_parts.py <id>` | エラー 0 件 |
 | 7 | ビューアで動かして確認・調整する | `npm run dev`、`viewer_shots.mjs` | 調整した `vector.json` |
 | 8 | 動画の書き出しと口パク | `record.mjs`、`lipsync.py` | MP4 |
+| 9 | （任意）体と頭の回転の絵（30°・60°・90°） | Fable 5.2 ＋ `tools/vector/fable_brief_*.md` | `body*.json`・`head*.json` |
+| 10 | （任意）声・性格・演技の癖を決め、解説動画を作る | `tools/explainer/make_video.py` | MP4 |
+
+モーションを作る・直すときは、どの段階でも `references/motion-rules.md`（動きのルール）に従います。
 
 `ref/` は `public/characters/<id>/vector/ref/` です。キャラ ID は小文字の英数字にします（例：`usagi`）。試行の画像や Fable の作業ファイルは `var/vector/<id>/` に溜まります（コミット対象外）。
 
@@ -151,6 +155,31 @@ bash tools/vector/sheets/turntable.sh <id>          # COMFY_SERVER で ComfyUI �
 
 4. 見る点：白いキャラの部品の境目に余計な線が出ていないか、首振り ±30° で目が顔の輪郭の外へ出ないか、耳・髪の付け根が頭から離れないか、腕と手の太さ・色が合っているか、揺れ物の揺れ方。
 5. 調整は `vector.json` の値で行います。URL のパラメーターで値を試してから書き込みます。調整できる値の一覧は `references/tuning.md`、よくある問題と対処は `references/troubleshooting.md` にあります。
+6. **手のテンプレートを載せる：** 手の形 8 種（開き・手のひら・手のひら上・指差し・カメラへの指差し・グー・ピース・いいね）は、テンプレートを載せるとそろいます。シートの手に近いタイプを選びます：`human`（5 本指）・`beast`（親指＋短い指 3 本）・`mitten`（親指＋ひとかたまり。仮うさぎ）・`stick`（棒状の腕の先）。
+
+   ```bash
+   .venv/bin/python tools/vector/hands/apply.py <id> <タイプ> --dry-run        # 手の長さの警告を見る
+   .venv/bin/python tools/vector/hands/apply.py <id> <タイプ>                  # vector.json の hand_* だけを差し替える
+   ```
+
+   色と大きさは `data/characters/<id>.json` の `rig.hands`（`type`・`scale`・`colors` の `base`・`line`・`pad`、`shapeScale`、`dropLines`）に書きます（`references/avatar-package.md` §4.2）。指の線の色（`line`）は輪郭線より薄くします。大きさは正面の立ち姿の手と見比べて決めます（仮うさぎは 0.7）。適用したら、`hand=<形>` を付けて 8 種を撮って確かめます。手の形の仕様は `references/parts-spec.md` §4.3 にあります。
+
+## 動きを作るとき
+
+モーション（`data/motions/*.json`）を手で書く・生成したものを直すときは、`references/motion-rules.md` を読んでから作ります。特に守ること：
+
+- **体は止めない：** 立っているだけでも重心を左右の足へ移し、腰（`hips` の位置と、腰の骨の傾き）を動かし続ける。数秒ごとに、体重をかける足をはっきり入れ替える。
+- **ニコニコの目で止めない：** 笑顔の閉じた目は決めどころだけにし、ふつうの目を半分以上にする。ふつうの目の間は、目の泳ぎ（自動）・視線・まばたきで虹彩を動かし続ける。
+- **カメラ目線を基本にする：** 図や指す先を見るのは短い合図だけ。ただし顔を真正面に固定せず、小さく振る・かしげる。
+- **まばらなキーで腰を浮かせない：** 一瞬だけ動かす値は、直前に元の値のキーを置く。
+
+作ったら検査します（警告が出たら、意図したものかを確かめる）：
+
+```bash
+.venv/bin/python tools/motion/lint_motion.py data/motions/<名前>.json
+```
+
+ビューアと動画の書き出しは、待機の微動（重心の移動）・目の泳ぎ・まばたき・呼吸を既定で重ねます。モーションの中の動きは、その上に足すものとして作ります。
 
 ## 8. 動画の書き出しと口パク
 
@@ -167,6 +196,39 @@ node tools/vector/record.mjs --out out/<id>_hello --motion talk_demo --lipsync l
 - 英語の台詞は `--lang en`、テキストなしで音量だけなら `--method rms`、Whisper の単語の時刻があれば `--whisper whisper.json`。
 - 背景色は `--query "bg=ffd3e0"`、手描き風の線は `vHand=0〜4`（なし・弱・中・強・手描き＋。既定は強）。
 - ビューアでも、口パクの JSON と音声ファイルを読み込んで再生できます。
+
+## 9. 体と頭の回転の絵（任意）
+
+正面の部品だけで、頭は ±30°、体は ±15° まで向きます。それより大きく向かせたい場合だけ、回転の絵を描き足します。見本の仮うさぎには、体 30°・60°・90° と頭 30°・60°・90° の絵があります（`public/characters/usagi/vector/body*.json`・`head*.json`）。
+
+1. **参照画像：** 360 度回転動画（3 の `turntable.sh`）から、30°・60°・90° のコマを `ref/body30.png`・`body60.png`・`body90.png` に書き出します：`.venv/bin/python tools/vector/sheets/turn_refs.py <id>`。左右対称な目印 2 つ（耳・髪飾りなど）の画面上の間隔から角度を測り、角度ごとのコマ番号を表示します。見本にないキャラは、目印の色と行の範囲を `--mask white --rows 20 150` のように渡します。コマを決めたら `--write 30=<コマ>,60=<コマ>,90=<コマ>` で書き出します。H3 がない場合は、シートの斜め・側面の図を同じ大きさ（1024×1536、足の位置と身長を `front.png` に合わせる）に置いて使います。
+2. **描く：** 依頼文のひな形（`tools/vector/fable_brief_body.md`、`fable_brief_head90.md`・`fable_brief_head60.md`・`fable_brief_head30.md` の順）に差し込み、Fable 5.2 のサブエージェントに渡します。仕様は `references/turn-spec.md` です。体は 30°・60°・90° を、頭は真横 → 60° → 30° の順に描かせると、形の基準がそろいます。左右非対称な髪のキャラは、反対向きの頭（`fable_brief_head_opp.md`）も描きます。
+3. **検査：** `check_parts.py <id> --view body60`・`--view head90` のように向きごとに検査し、`.venv/bin/python tools/vector/head_keys_inventory.py <id>` で、鍵の頭どうしの部品・shape の名前と数がそろっていることを確かめます（中割りは同じ名前の shape どうしを混ぜるので、そろっていないと崩れます）。
+4. **確かめる：** ビューアで「体と頭の回転の絵」を「使う」にし（URL は `vBody=1`）、`motion=turn90_slow` で 0°→90° を見ます。`data/characters/<id>.json` の `rig.turn` を `turn90`（反対向きの頭があれば `turn90_opp`）にします。
+
+回転の絵は、既定では読み込まれません（ビューアは `vBody=1`、解説動画は `--turn on`）。
+
+## 10. 解説動画（任意）
+
+内容・台本・意味タグの 3 層のデータから、キャラの身振り・指差し・声に合わせたビート・間の演技を自動で付けて、動画を書き出します。
+
+1. **キャラ定義：** `data/characters/<id>.json` に、声（`voice`）・性格と口調（`persona`）・演技の癖（`acting`）・撮影の既定値（`capture`）を書きます。形式は `references/avatar-package.md`、見本は `data/characters/usagi.json` です。性格・口調・演技の癖は、案を出してユーザーに確かめてから `"status": "approved"` にします。
+2. **声：** `voice.ja.engine` を選びます。`files`（TTS を使わず、行ごとの wav を自分で置く）、`command`（手元の TTS のコマンドを `voice.ja.command` に書く。`{text}`・`{out}` などを差し込む）、`irodori`（Irodori-TTS-Custom。環境変数 `IRODORI_HOME`）。
+3. **内容と台本：** 内容層 `content.json`（キャラに依存しない要旨・意味タグ・画面の図）と、キャラの口調の台本 `script.<id>.json` を書きます。台本の書き直しの依頼文は `tools/explainer/make_script.py` が作ります。形式は `references/explainer-format.md`、見本は `data/explainer/samples/`。検査：`.venv/bin/python tools/explainer/explainer_format.py check <内容のフォルダ>`。
+4. **書き出し：** `.venv/bin/python tools/explainer/make_video.py <内容のフォルダ> <id>`（音声 → タイムライン → 撮影 → 合成）。開発サーバーとは別に、撮影用のサーバー（:5285、`CAPTURE_PORT`）を自動で起動します。回転の絵を使うときは `--turn on`。司会役を胸から上の小窓で出すときは、撮影に `FRAMING=bust`、演技に `--acting ...,bust` を使います（`motion-rules.md` §6）。
+5. **見る点：** カメラ目線が基本になっているか、ニコニコの目が続いていないか、腰が止まっていないか、同じ身振りが続いていないか（`motion-rules.md`）。字幕と口パクが声に合っているか。
+
+## 参照
+
+| ファイル | 内容 |
+|---|---|
+| `references/parts-spec.md` | 部品の仕様（命名、`vector.json` の項目、手の形 8 種、検査） |
+| `references/turn-spec.md` | 体と頭の回転の絵の仕様（任意） |
+| `references/motion-rules.md` | 動きのルールと検査 |
+| `references/avatar-package.md` | キャラ定義（声・性格・演技の癖・撮影の既定値） |
+| `references/explainer-format.md` | 解説動画のデータ形式（内容・台本・意味タグ） |
+| `references/fable-brief.md`・`character-notes.md`・`drawing-workflow.md` | 部品分けの依頼文、キャラの補足の書き方、作画の流れ |
+| `references/visual-qa.md`・`tuning.md`・`troubleshooting.md` | 目視の確認点、調整できる値、よくある問題と対処 |
 
 ## 終わったら
 

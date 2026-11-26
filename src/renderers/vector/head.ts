@@ -33,6 +33,11 @@ export interface HeadTurn {
   pupilDepth: number;
   /** foreshortening of the iris/pupil when they roll (0 = none, 1 = cos of the roll angle) */
   irisSqueeze: number;
+  /** the upper lid (lash, half-closed lid) follows the iris when it moves down, as a fraction of
+   *  the iris's downward offset. For eyes whose white has no outline (the lash is the
+   *  only lid line): without it a lowered iris shows its whole top rim touching the lash,
+   *  which reads as the iris drawn in front of the lid. 0 = off */
+  lidFollow: number;
   /** narrowing of the ear on the turning side (and widening on the other) per sin(yaw) */
   earSqueeze: number;
   /** how much the ear roots close in on the head centre (1 = like points on the side of a
@@ -40,6 +45,9 @@ export interface HeadTurn {
   earIn: number;
   /** slide of the inner shapes of an ear toward the turn, in ear widths per sin(yaw) */
   earInner: number;
+  /** on a turned head drawing (60 deg head), the width of the paired roots (ears, twin tails)
+   *  also follows the pair's spread: x pairSpread^earWidthTurn (0 = off) */
+  earWidthTurn: number;
   /** extra depth of the nose (it sticks out of the face) */
   noseDepth: number;
   /** gain of the up/down (pitch) displacement of all layers */
@@ -47,7 +55,7 @@ export interface HeadTurn {
 }
 
 export const DEFAULT_HEAD_TURN: HeadTurn = {
-  radius: 1, rimFalloff: 1, shift: 0.08, domeFloor: 0.35, irisRoll: 0.2, pupilDepth: 1.35, irisSqueeze: 1, earSqueeze: 0.3, earIn: 1, earInner: 0.08, noseDepth: 1.1, pitchGain: 1,
+  radius: 1, rimFalloff: 1, shift: 0.08, domeFloor: 0.35, irisRoll: 0.2, pupilDepth: 1.35, irisSqueeze: 1, lidFollow: 0, earSqueeze: 0.3, earIn: 1, earInner: 0.08, earWidthTurn: 0.5, noseDepth: 1.1, pitchGain: 1,
 };
 
 export interface HeadFrame {
@@ -58,6 +66,23 @@ export interface HeadFrame {
   /** rim of the whole head around c: half width, height above c, height below c (px) */
   reach?: [number, number, number];
   turn?: Partial<HeadTurn>;
+  /** angle the head drawing itself shows (radians, same sign as yaw; 0 = the front head,
+   *  +-60 deg = the 60 deg head); yaw is measured from it */
+  base?: number;
+  /** x of the axis the paired roots (ear_L / ear_R, twintail_L / twintail_R) spread about:
+   *  the midpoint of their rest anchors (defaults to c[0]) */
+  pairMid?: number;
+}
+
+/** Spread of a pair of roots on the head (ears, twin tails) at the drawing's angle `base`
+ *  turned by `yaw`: points on a turning cylinder keep x cos(angle), so the gap drawn at `base`
+ *  scales by cos(base + yaw) / cos(base). The front head (base 0) gives cos(yaw); a 60 deg head
+ *  shown at 30 deg opens its ears by 1.73, shown at 75 deg closes them by 0.52. A
+ *  drawing near the side (|base| > 80 deg) shows the pair overlapping and keeps it as drawn. */
+export function pairSpread(base: number, yaw: number): number {
+  const c0 = Math.cos(base);
+  if (Math.abs(c0) < Math.cos((80 * Math.PI) / 180)) return 1;
+  return Math.max(0, Math.cos(base + yaw)) / c0;
 }
 
 /** Displacement of the layer centre in head radii per sin(yaw); + = toward the turn. */
@@ -159,14 +184,20 @@ export function featurePlace(h: HeadFrame, p: number, c0: Pt, hw = 0, depth = 1)
 
 /** Rigid placement of a part attached to the head at `anchor` (ear, twin tail): the offset of
  *  the anchor and the horizontal scale about it. */
-export function attachPlace(h: HeadFrame, p: number, anchor: Pt): { d: Pt; sx: number } {
+export function attachPlace(h: HeadFrame, p: number, anchor: Pt, paired = true): { d: Pt; sx: number } {
   const t = turnOf(h);
   const s = headShift(h);
   const d = shellDisp(h, p, anchor);
   const [rx] = reachOf(h);
   const side = clamp((anchor[0] - h.c[0]) / (0.4 * rx), -1, 1);
-  const sx = clamp(1 - t.earSqueeze * Math.sin(h.yaw) * side, 0.6, 1.3);
-  const inward = -(anchor[0] - h.c[0]) * (1 - Math.cos(h.yaw)) * t.earIn;
+  // a turned head drawing spreads only the left/right pairs (ears, twin tails); other
+  // attachments (front hair locks) stay where drawn. The front head keeps cos(yaw) for all.
+  const spread = h.base && !paired ? 1 : pairSpread(h.base ?? 0, h.yaw);
+  const widen = h.base && paired ? Math.pow(spread, t.earWidthTurn) : 1;
+  const sx = clamp(1 - t.earSqueeze * Math.sin(h.yaw) * side, 0.6, 1.3) * widen;
+  // the roots close in on (or open from) the axis of the pair as the head turns
+  const mid = h.pairMid ?? h.c[0];
+  const inward = (anchor[0] - mid) * (spread - 1) * t.earIn;
   return { d: [d[0] + s[0] + inward, d[1] + s[1]], sx };
 }
 

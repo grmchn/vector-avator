@@ -46,4 +46,4 @@
 完了の基準は「生成コマンドが成功した」ではなく、上の比較を行い、修正できる破綻を直して、ビューアで動かしても破綻がないこと。未確認・未解決を隠さない。
 
 
-<!-- source: the rebuild-character-layers skill (owner's), adapted for vector-avator -->
+<!-- source: the rebuild-character-layers skill, adapted for vector-avator -->

@@ -6,7 +6,7 @@ import { buildArm } from "../src/renderers/vector/arm";
 import { parsePath, flatten, type VectorDoc } from "../src/renderers/vector/vdata";
 import { SpringChain } from "../src/renderers/vector/spring";
 import { deltaE, darken } from "../src/renderers/vector/outline";
-import { attachPlace, domeWeight, faceDisp, featurePlace, headReach, headShift, rimWeight, shellDisp, shellMap, type HeadFrame } from "../src/renderers/vector/head";
+import { attachPlace, domeWeight, faceDisp, featurePlace, headReach, headShift, pairSpread, rimWeight, shellDisp, shellMap, type HeadFrame } from "../src/renderers/vector/head";
 import { parseMotion, samplePose } from "../src/core/motion";
 import { quatFromEulerDeg, type Quat } from "../src/core/math";
 
@@ -104,7 +104,7 @@ describe("buildArm", () => {
     }
     return n;
   };
-  // usamiku-like bands: white / cyan on the upper arm, navy across the elbow, cyan cuff
+  // a twin-tail character-like bands: white / cyan on the upper arm, navy across the elbow, cyan cuff
   const sleeve = { ...doc.arms.L, width: { shoulder: 80, elbow: 80, wrist: 92 }, bands: [
     { from: 0, to: 0.21, color: "#ffffff" }, { from: 0.21, to: 0.375, color: "#7bdbdb" },
     { from: 0.375, to: 0.875, color: "#314576" }, { from: 0.875, to: 1, color: "#7bdbdb" }] };
@@ -242,6 +242,21 @@ describe("head turn (Live2D-style deformation of the front drawing)", () => {
     expect(l.sx).toBeLessThan(1);
     expect(r.sx).toBeGreaterThan(1);
     expect(l.d[0]).toBeLessThan(r.d[0]); // the gap between the roots shrinks
+  });
+  it("spreads the ear roots of a turned head drawing like points on a cylinder", () => {
+    const D = Math.PI / 180;
+    expect(pairSpread(0, 30 * D)).toBeCloseTo(Math.cos(30 * D)); // front head: cos(yaw), as before
+    expect(pairSpread(60 * D, -30 * D)).toBeCloseTo(Math.cos(30 * D) / Math.cos(60 * D)); // 60 deg head shown at 30
+    expect(pairSpread(60 * D, 15 * D)).toBeCloseTo(Math.cos(75 * D) / Math.cos(60 * D)); // ... at 75
+    expect(pairSpread(-60 * D, 15 * D)).toBeCloseTo(Math.cos(45 * D) / Math.cos(60 * D)); // mirrored drawing
+    expect(pairSpread(90 * D, -15 * D)).toBe(1); // the side head keeps its overlapping pair
+    // a 60 deg head shown at 30 deg opens the gap between its roots about their midpoint
+    const h60 = { ...h, yaw: -30 * D, base: 60 * D, pairMid: 540 };
+    const a = attachPlace(h60, -0.04, [600, 380]), b = attachPlace(h60, -0.04, [480, 380]);
+    expect((600 + a.d[0]) - (480 + b.d[0])).toBeGreaterThan(120 * 1.5);
+    // the front head keeps its old behaviour (no base: no widening)
+    const f = attachPlace({ ...h, yaw: 30 * D }, -0.04, [512 + 200, 380]);
+    expect(f.sx).toBeCloseTo(1 - 0.3 * Math.sin(30 * D));
   });
   it("moves up when looking up; rim weights are 0 at the rim", () => {
     const up = { ...h, yaw: 0, pitch: (15 * Math.PI) / 180 };

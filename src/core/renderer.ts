@@ -1,10 +1,12 @@
 // Contract between the motion side (src/core) and the drawing methods A-D.
 import type { Pose } from "./pose";
 import type { FaceState } from "./face";
+import type { AvatarPackage } from "./avatarPackage";
 
 export type RendererId = "A" | "B" | "C" | "D" | "E" | "V" | "raw";
 
-export interface CharacterConfig {
+/** Character definition (data/characters/<id>.json) = drawing assets + avatar package (docs/avatar-package.md). */
+export interface CharacterConfig extends AvatarPackage {
   id: string;
   label: string;
   /** 3D model (VRM or GLB) under public/. */
@@ -14,6 +16,8 @@ export interface CharacterConfig {
   faces2d?: { url: string };
   /** Vector character for method V (docs/vector-parts.md). */
   vector?: { url: string };
+  /** Defaults for viewer URL parameters (e.g. vOuter, vHand), applied when the URL does not set them. */
+  urlDefaults?: Record<string, string>;
 }
 
 /** Rendering style (Phase 3). Independent from the drawing method. */
@@ -24,13 +28,22 @@ export interface StyleSettings {
   shadeSteps?: number;
 }
 
+/** Camera framing (id112 adds "bust": head and chest, for a small presenter window). */
+export type Framing = "body" | "face" | "bust";
+
+/** The framing asked for in the URL (?framing=face|bust; anything else is the whole body). */
+export function parseFraming(q: URLSearchParams): Framing {
+  const f = q.get("framing");
+  return f === "face" || f === "bust" ? f : "body";
+}
+
 export interface RendererContext {
   container: HTMLElement;
   character: CharacterConfig;
   width: number;
   height: number;
-  /** Camera framing: whole body (default) or a close-up of the face. */
-  framing?: "body" | "face";
+  /** Camera framing: whole body (default), a close-up of the face, or head-and-chest. */
+  framing?: Framing;
   /** Draw debug overlays (bone positions). */
   debug?: boolean;
 }

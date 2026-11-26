@@ -9,10 +9,10 @@ import type { ChainDef, Pt } from "./vdata";
 export interface ChainState { th: number[]; om: number[]; ls: number; lv: number }
 
 export class SpringChain {
-  readonly n: number;
-  readonly joints: Pt[];          // rest joint positions (drawing px), joints[0] = root
-  readonly segLen: number;
-  readonly k: number; readonly c: number; readonly g: number;
+  n: number;
+  joints: Pt[];          // rest joint positions (drawing px), joints[0] = root
+  segLen: number;
+  k: number; c: number; g: number;
   state: ChainState;
   private lastRoot: Pt | null = null;
   private lastVel: Pt = [0, 0];
@@ -24,8 +24,17 @@ export class SpringChain {
    *  that would otherwise throw every segment to its angle limit */
   accMax = 60000;
 
-  constructor(readonly def: ChainDef, scale = 1) {
+  constructor(public def: ChainDef, private scale = 1) {
     this.n = Math.max(1, Math.round(def.segments));
+    this.joints = []; this.segLen = 0; this.k = 0; this.c = 0; this.g = 0; this.restDirs = [];
+    this.rest(def);
+    this.state = { th: new Array(this.n).fill(0), om: new Array(this.n).fill(0), ls: 0, lv: 0 };
+  }
+
+  /** The rest geometry and the spring constants of a chain definition. */
+  private rest(def: ChainDef) {
+    const scale = this.scale;
+    this.def = def;
     this.joints = [];
     for (let i = 0; i <= this.n; i++) {
       const t = i / this.n;
@@ -34,12 +43,21 @@ export class SpringChain {
     this.segLen = Math.hypot(def.tip[0] - def.root[0], def.tip[1] - def.root[1]) / this.n;
     const d: Pt = [(def.tip[0] - def.root[0]) / (this.segLen * this.n), (def.tip[1] - def.root[1]) / (this.segLen * this.n)];
     this.restDirs = Array.from({ length: this.n }, () => d);
-    // soft and bouncy: ears and twin tails are charm points (owner, 2026-11-17).
+    // soft and bouncy: ears and twin tails are charm points.
     // stiffness 0.7 -> about 1.5 Hz; damping 0.4 -> damping ratio about 0.22 (visible overshoot)
     this.k = 6 + 110 * def.stiffness;
     this.c = 2 * Math.sqrt(this.k) * (0.04 + 0.45 * def.damping);
     this.g = 40 * def.gravity * scale;
-    this.state = { th: new Array(this.n).fill(0), om: new Array(this.n).fill(0), ls: 0, lv: 0 };
+  }
+
+  /** Move the rest of the chain (an in-between drawing of the turn engine) keeping its
+   *  swing: the angles stay, and the root history moves with the rest root so that the change
+   *  of drawing is not felt as a kick. */
+  rebase(def: ChainDef) {
+    if (Math.max(1, Math.round(def.segments)) !== this.n) { this.n = Math.max(1, Math.round(def.segments)); this.rest(def); this.reset(); return; }
+    const dx = def.root[0] - this.def.root[0], dy = def.root[1] - this.def.root[1];
+    if (this.lastRoot) this.lastRoot = [this.lastRoot[0] + dx, this.lastRoot[1] + dy];
+    this.rest(def);
   }
 
   reset() {
@@ -47,7 +65,7 @@ export class SpringChain {
     this.lastRoot = null; this.lastVel = [0, 0];
   }
 
-  /** Take over the swing of the same chain in another body view (id056): the angles carry
+  /** Take over the swing of the same chain in another body view: the angles carry
    *  over; the root history restarts so the root's jump between drawings is not a kick. */
   adopt(o: SpringChain) {
     if (o.n !== this.n) { this.reset(); return; }

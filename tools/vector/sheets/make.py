@@ -4,7 +4,10 @@ Codex imagegen, in the same way for every character.
 The prompt is composed from three files:
   style_base.md            common art style
   characters/<id>.md       character-specific notes (traits to keep, overrides)
-  layouts/<kind>.md        what to draw (front | restyle | sheet_turnaround | sheet_face)
+  layouts/<kind>.md        what to draw (front | restyle | sheet_turnaround | sheet_face | sheet_front | clean)
+                           clean: remove backgrounds, captions and props from a busy original (no common style;
+                           pass the original with --ref; the result is used as an "original" reference)
+                           sheet_front: sheet 1 for characters that only need the front body (front pose + hands)
 
 usage:
   python tools/vector/sheets/make.py gen <id> <kind> [--count N] [--note TEXT] [--ref PATH=ROLE ...]
@@ -20,7 +23,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
 CODEX_HOME = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
-SIZES = {"front": "1024x1536", "restyle": "1024x1536", "sheet_turnaround": "1536x1024", "sheet_face": "1536x1024"}
+SIZES = {"clean": "1536x1024", "sheet_front": "1536x1024", "front": "1024x1536", "restyle": "1024x1536", "sheet_turnaround": "1536x1024", "sheet_face": "1536x1024"}
+RAW_KINDS = {"clean"}  # kinds that keep the original look: no common style, no character notes, no default refs
 ANGLE_ROLE = "a frame of a 360-degree turntable video of the same character ({}); use it only to understand the 3D shape at that angle"
 
 
@@ -44,7 +48,8 @@ def references(cid, kind, extra, angles=True):
     """Ordered list of (path, role). Character originals first, then generated references."""
     conf = char_conf(cid)
     roles = conf.get("roles", {})
-    refs = [(p, roles.get(p, "the original character design")) for p in conf["refs"]["original"]]
+    refs = [] if kind in RAW_KINDS else \
+        [(p, roles.get(p, "the original character design")) for p in conf["refs"]["original"]]
     rd = ref_dir(cid)
     if kind.startswith("sheet"):
         if (rd / "front.png").exists():
@@ -54,9 +59,10 @@ def references(cid, kind, extra, angles=True):
             p = rd / f"angle_{deg:03d}.png"
             if angles and p.exists():
                 refs.append((str(p.relative_to(ROOT)), ANGLE_ROLE.format(f"{deg} degrees")))
-        if kind == "sheet_face" and (rd / "sheet_turnaround.png").exists():
-            refs.append((str((rd / "sheet_turnaround.png").relative_to(ROOT)),
-                         "sheet 1 of the same character (keep the head identical to it)"))
+        for sheet1 in ("sheet_turnaround.png", "sheet_front.png"):
+            if kind == "sheet_face" and (rd / sheet1).exists():
+                refs.append((str((rd / sheet1).relative_to(ROOT)),
+                             "sheet 1 of the same character (keep the head identical to it)"))
     for e in extra:
         path, _, role = e.partition("=")
         refs.append((path, role or "additional reference"))
@@ -64,9 +70,10 @@ def references(cid, kind, extra, angles=True):
 
 
 def compose(cid, kind, note):
-    parts = [(HERE / "style_base.md").read_text(encoding="utf-8").split("-->", 1)[-1].strip(),
-             (HERE / char_conf(cid)["notes"]).read_text(encoding="utf-8").strip(),
-             (HERE / "layouts" / f"{kind}.md").read_text(encoding="utf-8").strip()]
+    parts = [] if kind in RAW_KINDS else \
+        [(HERE / "style_base.md").read_text(encoding="utf-8").split("-->", 1)[-1].strip(),
+         (HERE / char_conf(cid)["notes"]).read_text(encoding="utf-8").strip()]
+    parts.append((HERE / "layouts" / f"{kind}.md").read_text(encoding="utf-8").strip())
     if note:
         parts.append("【今回の追加指示】\n" + note.strip())
     return "\n\n".join(parts) + "\n"
